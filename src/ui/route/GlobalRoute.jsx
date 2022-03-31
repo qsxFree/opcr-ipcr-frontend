@@ -13,7 +13,7 @@ import ReviewPmtPage from "../page/pmt/ReviewPmtPage";
 import StrategicPlanPage from "../page/Strategicplan/StrategicPlanPage";
 import OperationalPlanPage from "../page/Operationalplan/OperationalPlanPage";
 import MediumDevGoalsPage from "../page/MediumDevGoals/MediumDevGoalsPage";
-import Offices from "../page/offices/Offices";
+import GeneralPage from "../page/general/GeneralPage";
 
 //This will serve as the base router for all pages
 const GlobalRoute = () => {
@@ -46,7 +46,7 @@ const GlobalRoute = () => {
 
             <Route path="reviewform" element={<ReviewPmtPage />} />
 
-            <Route path="offices" element={<Offices />} />
+            <Route path="/general" element={<GeneralPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />

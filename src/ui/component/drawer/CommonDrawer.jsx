@@ -2,7 +2,7 @@ import { Form, notification } from "antd";
 import React from "react";
 import { useMutation } from "react-query";
 import SelectedDataContext from "../../../service/context/SelectedDataContext";
-import BaseDrawer from "./BaseDrawer";
+import BaseDrawer from "./_base/BaseDrawer";
 
 const Add = ({
   visible,

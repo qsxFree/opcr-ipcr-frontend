@@ -1,4 +1,4 @@
-import { HomeOutlined,FileAddOutlined,DatabaseOutlined,FileTextOutlined,FolderOutlined } from "@ant-design/icons/lib/icons";
+import { HomeOutlined,FileAddOutlined,DatabaseOutlined,FileTextOutlined,FolderOutlined, DeploymentUnitOutlined} from "@ant-design/icons/lib/icons";
 
 
 const navigations = [
@@ -11,10 +11,10 @@ const navigations = [
   },
   {
     id: 10,
-    uKey: "offices", //unique readable key
-    name: "Offices",
-    basePath: "/offices",
-    icon: <HomeOutlined />,
+    uKey: "general", //unique readable key
+    name: "General",
+    basePath: "/general",
+    icon: <DeploymentUnitOutlined />,
   },
 
   {
