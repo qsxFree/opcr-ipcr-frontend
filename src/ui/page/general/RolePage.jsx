@@ -22,7 +22,7 @@ const column = [
     fixed: "right",
     width: 100,
     render: (data, record) => {
-      return <TableActions hasDelete />;
+      return <TableActions record={record} hasDelete />;
     },
   },
 ];
@@ -92,14 +92,14 @@ const RolePage = () => {
           visible={drawerVisibility.add.visible}
           onClose={() => drawerVisibility.add.setVisible(false)}
           entityName="Role"
-          API={OfficeAPI}
+          API={EmployeeRoleAPI}
           FormComponent={RoleForms.Add}
         />
         <CommonDrawer.Edit
           visible={drawerVisibility.edit.visible}
           onClose={() => drawerVisibility.edit.setVisible(false)}
           entityName="Office"
-          API={OfficeAPI}
+          API={EmployeeRoleAPI}
           FormComponent={RoleForms.Edit}
         />
       </SelectedDataProvider>
