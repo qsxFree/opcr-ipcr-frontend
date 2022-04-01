@@ -27,9 +27,9 @@ const column = [
     title: "Head",
     dataIndex: "_head",
     key: "head",
-    /* render: (data, row) => {
-      return data !== null ? data.first_name + " " + data.last_name : null;
-    },*/
+    render: (data, row) => {
+      return data && data.last_name + ", " + data.first_name;
+    },
   },
   {
     title: "Parent",
@@ -44,7 +44,7 @@ const column = [
     fixed: "right",
     width: 100,
     render: (data, record) => {
-      return <TableActions hasDelete />;
+      return <TableActions hasDelete record={record} />;
     },
   },
 ];
@@ -53,6 +53,9 @@ const OfficePage = () => {
   const drawerVisibility = useDrawerVisibility();
   const commons = useTableCommons({
     code: null,
+    name: null,
+    _head: { id: null },
+    _parent: { id: null },
   });
 
   const _handleAddButtonClick = () => {
