@@ -1,5 +1,11 @@
-import { HomeOutlined,FileAddOutlined,DatabaseOutlined,FileTextOutlined,FolderOutlined, DeploymentUnitOutlined} from "@ant-design/icons/lib/icons";
-
+import {
+  HomeOutlined,
+  FileAddOutlined,
+  DatabaseOutlined,
+  FileTextOutlined,
+  FolderOutlined,
+  DeploymentUnitOutlined,
+} from "@ant-design/icons/lib/icons";
 
 const navigations = [
   {
@@ -22,23 +28,23 @@ const navigations = [
     uKey: "strategicPlan", //unique readable key
     name: "Strategic Plan",
     basePath: "/strategicplan",
-    icon: <FolderOutlined /> ,
+    icon: <FolderOutlined />,
   },
   {
     id: 3,
     uKey: "operationalPlan", //unique readable key
     name: "Operational Plan",
     basePath: "/operationalplan",
-    icon: <FolderOutlined /> ,
+    icon: <FolderOutlined />,
   },
   {
     id: 4,
     uKey: "mediumdevGoals", //unique readable key
     name: "Development Goals",
     basePath: "/mediumdevgoals",
-    icon: <FolderOutlined /> ,
+    icon: <FolderOutlined />,
   },
- /* {
+  /* {
     id: 4,
     uKey: "forms", //unique readable key
     name: "Forms",
@@ -62,20 +68,20 @@ const navigations = [
       },
     ],
   },*/
-  {
-    id: 5,
-    uKey: "createOpcr", //unique readable key
-    name: "Create OPCR",
-    basePath: "/createopcr",
-    icon: <FileAddOutlined />,
-  },
-  {
-    id: 8,
-    uKey: "createIpcr", //unique readable key
-    name: "Create IPCR",
-    basePath: "/createipcr",
-    icon: <FileAddOutlined />,
-  },
+  // {
+  //   id: 5,
+  //   uKey: "createOpcr", //unique readable key
+  //   name: "Create OPCR",
+  //   basePath: "/createopcr",
+  //   icon: <FileAddOutlined />,
+  // },
+  // {
+  //   id: 8,
+  //   uKey: "createIpcr", //unique readable key
+  //   name: "Create IPCR",
+  //   basePath: "/createipcr",
+  //   icon: <FileAddOutlined />,
+  // },
   {
     id: 6,
     uKey: "ipcrForms", //unique readable key
@@ -90,15 +96,15 @@ const navigations = [
     basePath: "/repository",
     icon: <DatabaseOutlined />,
   },
-  
+
   {
     id: 9,
     uKey: "reviewForms", //unique readable key
     name: "Review Forms",
     basePath: "/reviewform",
-    icon: <FolderOutlined /> ,
+    icon: <FolderOutlined />,
   },
-  
+
   //Add more navigations here
 ];
 

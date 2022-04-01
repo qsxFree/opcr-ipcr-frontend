@@ -5,27 +5,13 @@ import TableActions from "../../component/action/TableActions";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
 import RoleForms from "./components/RoleForms";
-import { OfficeAPI } from "../../../data/call/Resource";
+import { EmployeeRoleAPI, OfficeAPI } from "../../../data/call/Resource";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import useTableCommons from "../../../service/hooks/useTableCommons";
+import { useQuery } from "react-query";
 
-const dataSource = [
-  {
-    code: "P",
-    role: "President",
-  },
-  {
-    code: "VP",
-    role: "Vice President",
-  },
-];
 const column = [
-  {
-    title: "Code",
-    dataIndex: "code",
-    key: "code",
-  },
   {
     title: "Role",
     dataIndex: "role",
@@ -45,6 +31,19 @@ const RolePage = () => {
   const commons = useTableCommons({
     code: null,
   });
+
+  const queryEmployeeRole = useQuery(
+    "employee-role",
+    EmployeeRoleAPI.retrieveList,
+    {
+      onSuccess: (data) => {
+        commons.tableData.setter(data.data);
+      },
+      refetchIntervalInBackground: false,
+      refetchOnWindowFocus: false,
+    }
+  );
+
   const _handleAddButtonClick = () => {
     drawerVisibility.add.setVisible(true);
   };
@@ -83,7 +82,11 @@ const RolePage = () => {
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={dataSource} />
+          <Table
+            columns={column}
+            dataSource={commons.tableData.state}
+            loading={queryEmployeeRole.isLoading}
+          />
         </div>
         <CommonDrawer.Add
           visible={drawerVisibility.add.visible}

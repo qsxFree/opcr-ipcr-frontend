@@ -3,6 +3,8 @@ import CrudInterface from "./CrudInterface";
 const endpoint = {
   Office: "/office",
   EmployeeProfile: "/employee-profile",
+  EmployeeRole: "/employee-role",
+  Mfo: "/mfo",
 };
 
 export const OfficeAPI = {
@@ -21,9 +23,27 @@ export const EmployeeProfileAPI = {
   remove: CrudInterface.removeFn(endpoint.EmployeeProfile),
 };
 
+export const EmployeeRoleAPI = {
+  retrieveList: CrudInterface.retrieveListFn(endpoint.EmployeeRole),
+  retrieve: CrudInterface.retrieveFn(endpoint.EmployeeRole),
+  create: CrudInterface.createFn(endpoint.EmployeeRole),
+  update: CrudInterface.updateFn(endpoint.EmployeeRole),
+  remove: CrudInterface.removeFn(endpoint.EmployeeRole),
+};
+
+export const MfoAPI = {
+  retrieveList: CrudInterface.retrieveListFn(endpoint.Mfo),
+  retrieve: CrudInterface.retrieveFn(endpoint.Mfo),
+  create: CrudInterface.createFn(endpoint.Mfo),
+  update: CrudInterface.updateFn(endpoint.Mfo),
+  remove: CrudInterface.removeFn(endpoint.Mfo),
+};
+
 const Resource = {
   OfficeAPI,
   EmployeeProfileAPI,
+  EmployeeRoleAPI,
+  MfoAPI,
 };
 
 export default Resource;

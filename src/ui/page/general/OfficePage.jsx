@@ -9,20 +9,7 @@ import { SelectedDataProvider } from "../../../service/context/SelectedDataConte
 import CommonDrawer from "../../component/drawer/CommonDrawer";
 import OfficeForms from "./components/OfficeForms";
 import { OfficeAPI } from "../../../data/call/Resource";
-
-const dataSource = [
-  {
-    code: "OP",
-    name: "Office of the President",
-    _head: "Adrian Rodriguez",
-  },
-  {
-    code: "OVPRE",
-    name: "Office of the Vice President",
-    _head: "Joyjoy Yate",
-    _parent: "OP Office opf the President",
-  },
-];
+import { useQuery } from "react-query";
 
 const column = [
   {
@@ -48,9 +35,9 @@ const column = [
     title: "Parent",
     dataIndex: "_parent",
     key: "parent",
-    /* render: (data, row) => {
-      return data !== null ? data.code + " " + data.name : null;
-    },*/
+    render: (data, row) => {
+      return data !== null ? data.map((item) => item.code).join(", ") : null;
+    },
   },
   {
     title: "Actions",
@@ -67,9 +54,18 @@ const OfficePage = () => {
   const commons = useTableCommons({
     code: null,
   });
+
   const _handleAddButtonClick = () => {
     drawerVisibility.add.setVisible(true);
   };
+
+  const queryOffice = useQuery("office", OfficeAPI.retrieveList, {
+    onSuccess: (data) => {
+      commons.tableData.setter(data.data);
+    },
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: false,
+  });
 
   return (
     <DrawerVisiblityProvider
@@ -106,7 +102,11 @@ const OfficePage = () => {
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={dataSource} />
+          <Table
+            columns={column}
+            dataSource={commons.tableData.state}
+            loading={queryOffice.isLoading}
+          />
         </div>
 
         <CommonDrawer.Add

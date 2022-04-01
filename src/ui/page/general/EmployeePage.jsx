@@ -4,26 +4,12 @@ import TableActions from "../../component/action/TableActions";
 import React from "react";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
-import { OfficeAPI } from "../../../data/call/Resource";
+import { EmployeeProfileAPI, OfficeAPI } from "../../../data/call/Resource";
 import EmployeeForms from "./components/EmployeeForms";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import useTableCommons from "../../../service/hooks/useTableCommons";
-
-const dataSource = [
-  {
-    username: "Adrii",
-    name: "Adrian Rodriguez",
-    role: "President",
-    office: "Office of the President",
-  },
-  {
-    username: "Yeye",
-    name: "Joyjoy Yate",
-    role: "Vice-President",
-    office: "Office of the Vice President",
-  },
-];
+import { useQuery } from "react-query";
 
 const column = [
   {
@@ -33,24 +19,26 @@ const column = [
   },
   {
     title: "Name",
-    dataIndex: "name",
     key: "head",
-    /* render: (data, row) => {
-      return data !== null ? data.first_name + " " + data.last_name : null;
-    },*/
+    render: (data, row) => {
+      return row.last_name + ", " + row.first_name;
+    },
   },
   {
     title: "Role",
-    dataIndex: "role",
+    dataIndex: "_role",
     key: "role",
+    render: (data, row) => {
+      return data.role;
+    },
   },
   {
     title: "Office",
-    dataIndex: "office",
+    dataIndex: "_office",
     key: "office",
-    /* render: (data, row) => {
-      return data !== null ? data.code + " " + data.name : null;
-    },*/
+    render: (data, row) => {
+      return data.code;
+    },
   },
   {
     title: "Actions",
@@ -66,6 +54,15 @@ const EmployeePage = () => {
   const commons = useTableCommons({
     code: null,
   });
+
+  const queryEmployee = useQuery("employee", EmployeeProfileAPI.retrieveList, {
+    onSuccess: (data) => {
+      commons.tableData.setter(data.data);
+    },
+    refetchIntervalInBackground: false,
+    refetchOnWindowFocus: false,
+  });
+
   const _handleAddButtonClick = () => {
     drawerVisibility.add.setVisible(true);
   };
@@ -104,7 +101,11 @@ const EmployeePage = () => {
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={dataSource} />
+          <Table
+            columns={column}
+            dataSource={commons.tableData.state}
+            loading={queryEmployee.isLoading}
+          />
         </div>
         <CommonDrawer.Add
           visible={drawerVisibility.add.visible}
