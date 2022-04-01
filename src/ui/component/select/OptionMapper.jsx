@@ -34,3 +34,12 @@ export const employeeProfileOptionMapper = (data) => (
     </Tooltip>
   </Select.Option>
 );
+
+// Mapping for office data
+export const employeeRoleOptionMapper = (data) => (
+  <Select.Option key={data.id} value={data.id} data={data}>
+    <Tooltip placement="topLeft" title={`${data.name}`}>
+      <Typography.Text>{data.role}</Typography.Text>
+    </Tooltip>
+  </Select.Option>
+);

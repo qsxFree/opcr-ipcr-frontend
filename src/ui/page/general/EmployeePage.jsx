@@ -12,11 +12,11 @@ import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useQuery } from "react-query";
 
 const column = [
-  {
-    title: "Username",
-    dataIndex: "username",
-    key: "username",
-  },
+  // {
+  //   title: "Username",
+  //   dataIndex: "username",
+  //   key: "username",
+  // },
   {
     title: "Name",
     key: "head",
@@ -45,14 +45,19 @@ const column = [
     fixed: "right",
     width: 100,
     render: (data, record) => {
-      return <TableActions hasDelete />;
+      return <TableActions record={record} hasDelete />;
     },
   },
 ];
 const EmployeePage = () => {
   const drawerVisibility = useDrawerVisibility();
   const commons = useTableCommons({
-    code: null,
+    first_name: null,
+    last_name: null,
+    middle_name: null,
+    extension_name: null,
+    _role: null,
+    _office: null,
   });
 
   const queryEmployee = useQuery("employee", EmployeeProfileAPI.retrieveList, {
@@ -111,14 +116,14 @@ const EmployeePage = () => {
           visible={drawerVisibility.add.visible}
           onClose={() => drawerVisibility.add.setVisible(false)}
           entityName="Employee"
-          API={OfficeAPI}
+          API={EmployeeProfileAPI}
           FormComponent={EmployeeForms.Add}
         />
         <CommonDrawer.Edit
           visible={drawerVisibility.edit.visible}
           onClose={() => drawerVisibility.edit.setVisible(false)}
           entityName="Employee"
-          API={OfficeAPI}
+          API={EmployeeProfileAPI}
           FormComponent={EmployeeForms.Edit}
         />
       </SelectedDataProvider>
