@@ -40,14 +40,14 @@ const Add = ({
         _mutation.mutate(
           transform !== null
             ? transform(form.getFieldsValue())
-            : form.getFieldValue()
+            : form.getFieldsValue()
         );
       });
     } else {
       _mutation.mutate(
         transform !== null
           ? transform(form.getFieldsValue())
-          : form.getFieldValue()
+          : form.getFieldsValue()
       );
     }
   };
