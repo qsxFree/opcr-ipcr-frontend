@@ -5,6 +5,7 @@ const endpoint = {
   EmployeeProfile: "/employee-profile",
   EmployeeRole: "/employee-role",
   Mfo: "/mfo",
+  StrategicPlan: "/strategic-plan",
 };
 
 export const OfficeAPI = {
@@ -39,11 +40,20 @@ export const MfoAPI = {
   remove: CrudInterface.removeFn(endpoint.Mfo),
 };
 
+export const StrategicPlanAPI = {
+  retrieveList: CrudInterface.retrieveListFn(endpoint.StrategicPlan),
+  retrieve: CrudInterface.retrieveFn(endpoint.StrategicPlan),
+  create: CrudInterface.createFn(endpoint.StrategicPlan),
+  update: CrudInterface.updateFn(endpoint.StrategicPlan),
+  remove: CrudInterface.removeFn(endpoint.StrategicPlan),
+};
+
 const Resource = {
   OfficeAPI,
   EmployeeProfileAPI,
   EmployeeRoleAPI,
   MfoAPI,
+  StrategicPlanAPI,
 };
 
 export default Resource;

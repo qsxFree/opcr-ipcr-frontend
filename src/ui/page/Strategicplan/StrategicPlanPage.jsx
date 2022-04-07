@@ -19,14 +19,14 @@ const StrategicPlanPage = () => {
       content: <MfoPage />,
     },
     {
-      title: "IPCR",
-      key: "ipcr",
-      content: <IpcrPage />,
-    },
-    {
       title: "OPCR",
       key: "opcr",
       content: <OpcrPage />,
+    },
+    {
+      title: "IPCR",
+      key: "ipcr",
+      content: <IpcrPage />,
     },
   ];
 
