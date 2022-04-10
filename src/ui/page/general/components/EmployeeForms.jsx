@@ -2,11 +2,8 @@ import React from "react";
 import { Form, Input } from "antd";
 import SelectedDataContext from "../../../../service/context/SelectedDataContext";
 import CustomSelect from "../../../component/select/CustomSelect";
-import { EmployeeRoleAPI, OfficeAPI } from "../../../../data/call/Resource";
-import {
-  officeOptionMapper,
-  employeeRoleOptionMapper,
-} from "../../../component/select/OptionMapper";
+import { EmployeeRoleAPI } from "../../../../data/call/Resource";
+import { employeeRoleOptionMapper } from "../../../component/select/OptionMapper";
 
 const Add = ({ form }) => {
   return (
