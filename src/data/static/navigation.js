@@ -1,15 +1,11 @@
 import {
-  HomeOutlined,
-  FileAddOutlined,
-  DatabaseOutlined,
-  FileTextOutlined,
   FolderOutlined,
   DeploymentUnitOutlined,
   AreaChartOutlined,
   CarryOutOutlined,
-  FileOutlined,
   FileDoneOutlined,
   SettingOutlined,
+  UserOutlined,
 } from "@ant-design/icons/lib/icons";
 
 const navigations = [
@@ -21,8 +17,9 @@ const navigations = [
     icon: <AreaChartOutlined />,
     role: ["ADMIN"],
   },
+
   {
-    id: 10,
+    id: 2,
     uKey: "general", //unique readable key
     name: "General",
     basePath: "/general",
@@ -31,7 +28,7 @@ const navigations = [
   },
 
   {
-    id: 2,
+    id: 3,
     uKey: "strategicPlan", //unique readable key
     name: "Strategic Plan",
     basePath: "/strategicplan",
@@ -39,7 +36,7 @@ const navigations = [
     role: ["ADMIN", "HEAD", "GENERAL"],
   },
   {
-    id: 3,
+    id: 4,
     uKey: "operationalPlan", //unique readable key
     name: "Operational Plan",
     basePath: "/operationalplan",
@@ -47,7 +44,7 @@ const navigations = [
     role: ["ADMIN"],
   },
   {
-    id: 4,
+    id: 5,
     uKey: "mediumdevGoals", //unique readable key
     name: "Development Goals",
     basePath: "/mediumdevgoals",
@@ -108,12 +105,20 @@ const navigations = [
   // },
 
   {
-    id: 9,
+    id: 6,
     uKey: "reviewForms", //unique readable key
     name: "Review Forms",
     basePath: "/reviewform",
     icon: <FileDoneOutlined />,
     role: ["ADMIN", "PMT"],
+  },
+  {
+    id: 7,
+    uKey: "profile", //unique readable key
+    name: "Profile",
+    basePath: "/profile",
+    icon: <UserOutlined />,
+    role: ["ADMIN", "HEAD", "GENERAL"],
   },
 
   //Add more navigations here

@@ -10,6 +10,7 @@ import CommonDrawer from "../../component/drawer/CommonDrawer";
 import { StrategicPlanAPI } from "../../../data/call/Resource";
 import StrategicPlanForm from "./component/StrategicPlanForm";
 import { useQuery } from "react-query";
+import useRoleChecker from "../../../service/hooks/useRoleChecker";
 
 const column = [
   {
@@ -67,19 +68,13 @@ const column = [
       return data.code;
     },
   },
-  {
-    title: "Actions",
-    fixed: "right",
-    width: 100,
-    render: (data, record) => {
-      return <TableActions hasDelete />;
-    },
-  },
 ];
 
 const OpcrPage = () => {
   const drawerVisibility = useDrawerVisibility();
   const commons = useTableCommons({});
+  const headCheck = useRoleChecker(["ADMIN", "HEAD"]);
+  const canEdit = headCheck.check();
 
   const queryStrategicPlan = useQuery(
     "strategic-plan",
@@ -111,6 +106,37 @@ const OpcrPage = () => {
     FormComponent: StrategicPlanForm.Add,
     width: "60%",
   };
+
+  const extendedColumn = canEdit
+    ? {
+        title: "Actions",
+        fixed: "right",
+        width: 100,
+        render: (data, record) => {
+          return <TableActions hasDelete />;
+        },
+      }
+    : {};
+
+  const utilityButtons = canEdit && (
+    <>
+      <Button
+        type="primary"
+        //onClick={_handleAddButtonClick}
+        icon={<SendOutlined />}
+      >
+        Send Approval
+      </Button>
+
+      <Button
+        type="primary"
+        onClick={_handleAddButtonClick}
+        icon={<PlusOutlined />}
+      >
+        Add Strategic Plan
+      </Button>
+    </>
+  );
 
   return (
     <DrawerVisiblityProvider
@@ -144,29 +170,18 @@ const OpcrPage = () => {
                 >
                   Refresh
                 </Button>
-                <Button
-                  type="primary"
-                  //onClick={_handleAddButtonClick}
-                  icon={<SendOutlined />}
-                >
-                  Send Approval
-                </Button>
-
-                <Button
-                  type="primary"
-                  onClick={_handleAddButtonClick}
-                  icon={<PlusOutlined />}
-                >
-                  Add Strategic Plan
-                </Button>
+                {utilityButtons}
               </Space>
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={commons.tableData.state} />
+          <Table
+            columns={[...column, extendedColumn]}
+            dataSource={commons.tableData.state}
+          />
         </div>
 
-        <CommonDrawer.Add {...propsAddDrawer} />
+        {canEdit && <CommonDrawer.Add {...propsAddDrawer} />}
       </SelectedDataProvider>
     </DrawerVisiblityProvider>
   );

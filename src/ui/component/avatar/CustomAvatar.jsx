@@ -16,7 +16,7 @@ const CustomAvatar = () => {
 
   return (
     <>
-      <Tag color="green">{user.user._role.name}</Tag>
+      <Tag color="green">{user.user._level.name}</Tag>
       <Dropdown
         arrow
         placement="bottomCenter"

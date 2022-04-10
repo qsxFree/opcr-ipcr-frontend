@@ -12,6 +12,7 @@ import MfoTransoformer from "../../../service/utils/transformer/mfoTransformer";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import moment from "moment";
+import useRoleChecker from "../../../service/hooks/useRoleChecker";
 
 const column = [
   {
@@ -36,22 +37,6 @@ const column = [
     dataIndex: "year",
     key: "year",
   },
-  {
-    title: "Actions",
-    fixed: "right",
-    width: 100,
-    render: (data, record) => {
-      return (
-        <TableActions
-          record={{
-            ...record,
-            year: moment().year(record.year),
-          }}
-          hasDelete
-        />
-      );
-    },
-  },
 ];
 const MfoPage = () => {
   const drawerVisibility = useDrawerVisibility();
@@ -64,6 +49,9 @@ const MfoPage = () => {
   });
 
   const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
+
+  const headCheck = useRoleChecker(["ADMIN"]);
+  const canEdit = headCheck.check();
 
   const queryMfo = useQuery("mfo", MfoAPI.retrieveList, {
     onSuccess: (data) => {
@@ -90,6 +78,25 @@ const MfoPage = () => {
     FormComponent: MfoForm.Edit,
     transform: MfoTransoformer.tranformForRequest,
   };
+
+  const extendedColumn = canEdit
+    ? {
+        title: "Actions",
+        fixed: "right",
+        width: 100,
+        render: (data, record) => {
+          return (
+            <TableActions
+              record={{
+                ...record,
+                year: moment().year(record.year),
+              }}
+              hasDelete
+            />
+          );
+        },
+      }
+    : {};
 
   return (
     <DrawerVisiblityProvider
@@ -123,20 +130,29 @@ const MfoPage = () => {
                 >
                   Refresh
                 </Button>
-                <Button
-                  type="primary"
-                  onClick={_handleAddButtonClick}
-                  icon={<PlusOutlined />}
-                >
-                  Add MFO
-                </Button>
+                {canEdit && (
+                  <Button
+                    type="primary"
+                    onClick={_handleAddButtonClick}
+                    icon={<PlusOutlined />}
+                  >
+                    Add MFO
+                  </Button>
+                )}
               </Space>
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={commons.tableData.state} />
-          <CommonDrawer.Add {...propsAddDrawer} />
-          <CommonDrawer.Edit {...propsEditDrawer} />
+          <Table
+            columns={[...column, extendedColumn]}
+            dataSource={commons.tableData.state}
+          />
+          {canEdit && (
+            <>
+              <CommonDrawer.Add {...propsAddDrawer} />
+              <CommonDrawer.Edit {...propsEditDrawer} />
+            </>
+          )}
         </div>
       </SelectedDataProvider>
     </DrawerVisiblityProvider>
