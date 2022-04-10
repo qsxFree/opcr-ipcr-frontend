@@ -17,6 +17,13 @@ const column = [
     dataIndex: "role",
     key: "role",
   },
+
+    {
+      title: "Office",
+      dataIndex: "office",
+      key: "office",
+      
+    },
   {
     title: "Actions",
     fixed: "right",

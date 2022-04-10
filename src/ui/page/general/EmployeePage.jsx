@@ -11,6 +11,12 @@ import { SelectedDataProvider } from "../../../service/context/SelectedDataConte
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useQuery } from "react-query";
 
+const dataSource =[{
+  key: "datasource1",
+ account: "aas",
+ role: "krezyl"
+},
+]
 const column = [
   // {
   //   title: "Username",
@@ -38,14 +44,24 @@ const column = [
     key: "office",
     render: (data, row) => {
       return data.code;
-    },
+    },  
+  },
+
+  {
+    title: "Account",
+    dataIndex: "_account",
+    key: "account",
+  
+     render: (data, row) => {
+      return <Button record={data}> <PlusOutlined /> Create Account</Button>
+    },  
   },
   {
     title: "Actions",
     fixed: "right",
     width: 100,
-    render: (data, record) => {
-      return <TableActions record={record} hasDelete />;
+    render: (data, record) => {      
+      return <TableActions record={record} hasDelete/>;  
     },
   },
 ];

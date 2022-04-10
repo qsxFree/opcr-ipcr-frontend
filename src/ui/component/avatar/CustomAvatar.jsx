@@ -12,6 +12,7 @@ const avatarMenu = (
 
 const CustomAvatar = () => {
   return (
+ 
     <Dropdown
       arrow
       placement="bottomCenter"

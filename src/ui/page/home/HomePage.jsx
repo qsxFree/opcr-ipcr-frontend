@@ -11,7 +11,7 @@ const HomePage = () => {
  
   return (
     <>
-      <PageHeader title="Home" subTitle="Announcement and Events" />
+      <PageHeader title="Dashboard" subTitle="Announcement and Events" />
       <ContentTab
         content={[
           {
@@ -19,17 +19,7 @@ const HomePage = () => {
             key: "tab2",
             content: <div className="base-container">Content Here</div>,
           },
-
-          {
-            title: "Tab2",
-            key: "tab3",
-            content: <div className="base-container">Content Here</div>,
-          },
-          {
-            title: "Tab1",
-            key: "tab4",
-            content: <div className="base-container">Content Here</div>,
-          },
+         
         ]}/>
     </>
   );

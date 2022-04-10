@@ -38,9 +38,9 @@ const GlobalRoute = () => {
 
             <Route path="createopcr" element={<CreateOpcrPage />} />
 
-            <Route path="ipcrforms" element={<IPCRFormsPage />} />
+            {/* <Route path="ipcrforms" element={<IPCRFormsPage />} /> */}
 
-            <Route path="repository" element={<RepositoryPage />} />
+            {/* <Route path="repository" element={<RepositoryPage />} /> */}
 
             <Route path="createipcr" element={<IpcrCreatePage />} />
 

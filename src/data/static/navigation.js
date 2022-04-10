@@ -5,15 +5,21 @@ import {
   FileTextOutlined,
   FolderOutlined,
   DeploymentUnitOutlined,
+  AreaChartOutlined,
+  CarryOutOutlined,
+  FileOutlined,
+  FileDoneOutlined,
+  SettingOutlined,
+
 } from "@ant-design/icons/lib/icons";
 
 const navigations = [
   {
     id: 1,
     uKey: "home", //unique readable key
-    name: "Home",
+    name: "Dashboard",
     basePath: "/home",
-    icon: <HomeOutlined />,
+    icon: <AreaChartOutlined />,
   },
   {
     id: 10,
@@ -28,14 +34,14 @@ const navigations = [
     uKey: "strategicPlan", //unique readable key
     name: "Strategic Plan",
     basePath: "/strategicplan",
-    icon: <FolderOutlined />,
+    icon: <CarryOutOutlined />,
   },
   {
     id: 3,
     uKey: "operationalPlan", //unique readable key
     name: "Operational Plan",
     basePath: "/operationalplan",
-    icon: <FolderOutlined />,
+    icon: <SettingOutlined />,
   },
   {
     id: 4,
@@ -82,27 +88,27 @@ const navigations = [
   //   basePath: "/createipcr",
   //   icon: <FileAddOutlined />,
   // },
-  {
-    id: 6,
-    uKey: "ipcrForms", //unique readable key
-    name: "IPCR Forms",
-    basePath: "/ipcrforms",
-    icon: <FileTextOutlined />,
-  },
-  {
-    id: 7,
-    uKey: "Repository", //unique readable key
-    name: "Repository",
-    basePath: "/repository",
-    icon: <DatabaseOutlined />,
-  },
+  // {
+  //   id: 6,
+  //   uKey: "ipcrForms", //unique readable key
+  //   name: "IPCR Forms",
+  //   basePath: "/ipcrforms",
+  //   icon: <FileTextOutlined />,
+  // },
+  // {
+  //   id: 7,
+  //   uKey: "Repository", //unique readable key
+  //   name: "Repository",
+  //   basePath: "/repository",
+  //   icon: <DatabaseOutlined />,
+  // },
 
   {
     id: 9,
     uKey: "reviewForms", //unique readable key
     name: "Review Forms",
     basePath: "/reviewform",
-    icon: <FolderOutlined />,
+    icon: <FileDoneOutlined /> ,
   },
 
   //Add more navigations here
