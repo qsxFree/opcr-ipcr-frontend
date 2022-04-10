@@ -21,7 +21,7 @@ export function transformUser(data) {
     _role: {
       id: role.id,
       name: role.role,
-      is_head: profile.id === office._head.id,
+      is_head:office._head ? profile.id === office._head.id : false,
     },
     _level: data._level,
   };
