@@ -32,12 +32,6 @@ const Add = ({ form }) => {
           retrieveFn={EmployeeRoleAPI.retrieveList}
         />
       </Form.Item>
-      <Form.Item label="Office" name="office">
-        <CustomSelect.SearchSelect
-          optionMap={officeOptionMapper}
-          retrieveFn={OfficeAPI.retrieveList}
-        />
-      </Form.Item>
     </Form>
   );
 };
