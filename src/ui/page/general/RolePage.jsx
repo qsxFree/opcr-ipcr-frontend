@@ -1,5 +1,5 @@
 import React from "react";
-import { Table, Row, Col, Input, Button } from "antd";
+import { Table, Row, Col, Input, Button, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TableActions from "../../component/action/TableActions";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
@@ -18,12 +18,20 @@ const column = [
     key: "role",
   },
 
-    {
-      title: "Office",
-      dataIndex: "office",
-      key: "office",
-      
+  {
+    title: "Office",
+    dataIndex: "_office",
+    key: "office",
+    render: (data, record) => {
+      return (
+        data && (
+          <Typography.Text>
+            <Typography.Text strong>{data.code}</Typography.Text> - {data.name}
+          </Typography.Text>
+        )
+      );
     },
+  },
   {
     title: "Actions",
     fixed: "right",

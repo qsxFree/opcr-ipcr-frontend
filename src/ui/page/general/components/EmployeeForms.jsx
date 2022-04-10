@@ -89,17 +89,6 @@ const Edit = ({ form }) => {
           initialOptions={[data._role]}
         />
       </Form.Item>
-      <Form.Item
-        label="Office"
-        name="office"
-        initialValue={data._office && data._office.id}
-      >
-        <CustomSelect.SearchSelect
-          optionMap={officeOptionMapper}
-          retrieveFn={OfficeAPI.retrieveList}
-          initialOptions={[data._office]}
-        />
-      </Form.Item>
     </Form>
   );
 };

@@ -27,6 +27,7 @@ const column = [
     title: "Head",
     dataIndex: "_head",
     key: "head",
+    width: 250,
     render: (data, row) => {
       return data && data.last_name + ", " + data.first_name;
     },

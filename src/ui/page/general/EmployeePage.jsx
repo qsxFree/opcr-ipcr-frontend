@@ -1,4 +1,4 @@
-import { Table, Row, Col, Input, Button } from "antd";
+import { Table, Row, Col, Input, Button, Typography } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import TableActions from "../../component/action/TableActions";
 import React from "react";
@@ -11,12 +11,13 @@ import { SelectedDataProvider } from "../../../service/context/SelectedDataConte
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useQuery } from "react-query";
 
-const dataSource =[{
-  key: "datasource1",
- account: "aas",
- role: "krezyl"
-},
-]
+const dataSource = [
+  {
+    key: "datasource1",
+    account: "aas",
+    role: "krezyl",
+  },
+];
 const column = [
   // {
   //   title: "Username",
@@ -35,33 +36,31 @@ const column = [
     dataIndex: "_role",
     key: "role",
     render: (data, row) => {
-      return data.role;
+      return data && data.role;
     },
-  },
-  {
-    title: "Office",
-    dataIndex: "_office",
-    key: "office",
-    render: (data, row) => {
-      return data.code;
-    },  
   },
 
   {
     title: "Account",
-    dataIndex: "_account",
+    dataIndex: "_user",
     key: "account",
-  
-     render: (data, row) => {
-      return <Button record={data}> <PlusOutlined /> Create Account</Button>
-    },  
+    width: 150,
+    render: (data, row) => {
+      return data ? (
+        <Typography.Text strong>{data.username}</Typography.Text>
+      ) : (
+        <Button type="dashed" icon={<PlusOutlined />}>
+          Create
+        </Button>
+      );
+    },
   },
   {
     title: "Actions",
     fixed: "right",
     width: 100,
-    render: (data, record) => {      
-      return <TableActions record={record} hasDelete/>;  
+    render: (data, record) => {
+      return <TableActions record={record} hasDelete />;
     },
   },
 ];
