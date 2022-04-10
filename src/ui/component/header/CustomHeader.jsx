@@ -1,11 +1,10 @@
-import { Affix, Layout, Row, Space, Typography,Tag } from "antd";
+import { Affix, Layout, Row, Space, Typography, Tag } from "antd";
 import React from "react";
 import Logo from "../logo/Logo";
 import APP_CONFIG from "../../../data/static/config";
 import CustomAvatar from "../avatar/CustomAvatar";
 
 const CustomHeader = () => {
-
   return (
     <Affix offsetTop={0}>
       <Layout.Header>
@@ -18,7 +17,6 @@ const CustomHeader = () => {
           </Space>
 
           <Space size="large">
-            <Tag color ="green">Admin</Tag>
             <CustomAvatar />
           </Space>
         </Row>

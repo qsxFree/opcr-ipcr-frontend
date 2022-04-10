@@ -10,7 +10,6 @@ import {
   FileOutlined,
   FileDoneOutlined,
   SettingOutlined,
-
 } from "@ant-design/icons/lib/icons";
 
 const navigations = [
@@ -20,6 +19,7 @@ const navigations = [
     name: "Dashboard",
     basePath: "/home",
     icon: <AreaChartOutlined />,
+    role: ["ADMIN"],
   },
   {
     id: 10,
@@ -27,6 +27,7 @@ const navigations = [
     name: "General",
     basePath: "/general",
     icon: <DeploymentUnitOutlined />,
+    role: ["ADMIN"],
   },
 
   {
@@ -35,6 +36,7 @@ const navigations = [
     name: "Strategic Plan",
     basePath: "/strategicplan",
     icon: <CarryOutOutlined />,
+    role: ["ADMIN", "HEAD", "GENERAL"],
   },
   {
     id: 3,
@@ -42,6 +44,7 @@ const navigations = [
     name: "Operational Plan",
     basePath: "/operationalplan",
     icon: <SettingOutlined />,
+    role: ["ADMIN"],
   },
   {
     id: 4,
@@ -49,6 +52,7 @@ const navigations = [
     name: "Development Goals",
     basePath: "/mediumdevgoals",
     icon: <FolderOutlined />,
+    role: ["ADMIN"],
   },
   /* {
     id: 4,
@@ -108,7 +112,8 @@ const navigations = [
     uKey: "reviewForms", //unique readable key
     name: "Review Forms",
     basePath: "/reviewform",
-    icon: <FileDoneOutlined /> ,
+    icon: <FileDoneOutlined />,
+    role: ["ADMIN", "PMT"],
   },
 
   //Add more navigations here
