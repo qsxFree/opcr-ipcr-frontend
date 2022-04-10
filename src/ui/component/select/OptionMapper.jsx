@@ -26,10 +26,14 @@ export const employeeProfileOptionMapper = (data) => (
   <Select.Option key={data.id} value={data.id} data={data}>
     <Tooltip
       placement="topLeft"
-      title={`${data.first_name} ${data.middle_name} ${data.last_name} ${data.extension_name}`}
+      title={`${data.last_name}, ${data.first_name} ${
+        data.middle_name ? data.middle_name.charAt(0) : ""
+      }. ${data.extension_name ? data.extension_name : ""}`}
     >
       <Typography.Text>
-        {`${data.first_name} ${data.middle_name} ${data.last_name} ${data.extension_name}`}
+        {`${data.last_name}, ${data.first_name} ${
+          data.middle_name ? data.middle_name.charAt(0) : ""
+        }. ${data.extension_name ? data.extension_name : ""}`}
       </Typography.Text>
     </Tooltip>
   </Select.Option>

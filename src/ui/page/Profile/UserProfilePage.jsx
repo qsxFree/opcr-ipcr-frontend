@@ -1,58 +1,49 @@
 import React, { useContext } from "react";
-import {
-  Descriptions,
-  Avatar,
-  Typography,
-  Space,
-  Tag,
-  Button,
-  Row,
-  Col,
-} from "antd";
-import { UserOutlined, EditOutlined } from "@ant-design/icons";
+import { Descriptions, Typography, Tag, PageHeader } from "antd";
 import NavigatorContext from "../../../service/context/NavigatorContext";
+import UserContext from "../../../service/context/UserContext";
 
 const UserProfilePage = () => {
-  const { Title } = Typography;
   const navigatorContext = useContext(NavigatorContext);
   navigatorContext.setSelectedKey("profile");
+  const user = React.useContext(UserContext);
+  const userData = user.user;
 
   return (
     <>
-      <div className="base-container">
-        <Space align="center" size="large" direction="horizontal">
-          <Row gutter={10} align="middle">
-            <Col>
-              <Avatar size={64} icon={<UserOutlined />} />
-            </Col>
-            <Col>
-              <Title level={3} style={{ paddingTop: "6px" }}>
-                Adrian Rodriguez
-              </Title>
-            </Col>
-            <Col>
-              <Tag color="blue">Admin</Tag>
-            </Col>
-          </Row>
-        </Space>
-      </div>
+      <PageHeader
+        avatar={{
+          icon: userData.username.charAt(0),
+          size: "large",
+        }}
+        title={userData.username}
+        tags={<Tag color="green">{userData._level.name}</Tag>}
+      />
 
       <div className="base-container">
         <Descriptions
-          title="User Profile"
+          title="Information"
           bordered={true}
           layout="horizontal"
           column={1}
-          extra={
-            <Button icon={<EditOutlined />} type="primary">
-              Edit
-            </Button>
-          }
+          // extra={
+          //   <Button icon={<EditOutlined />} type="primary">
+          //     Edit
+          //   </Button>
+          // }
         >
-          <Descriptions.Item label="UserName:">
-            Adrian Rodriguez
+          <Descriptions.Item label="Name">
+            {userData._employee_profile.name}
           </Descriptions.Item>
-          <Descriptions.Item label="Password:">Secret</Descriptions.Item>
+          <Descriptions.Item label="Role">
+            <Tag color="orange">{userData._role.name}</Tag>
+          </Descriptions.Item>
+          <Descriptions.Item label="Office">
+            <Typography.Text>
+              <Typography.Text strong>{userData._office.code}</Typography.Text>{" "}
+              - {userData._office.name}
+            </Typography.Text>
+          </Descriptions.Item>
         </Descriptions>
       </div>
     </>
