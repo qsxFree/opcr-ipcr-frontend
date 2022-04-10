@@ -95,7 +95,7 @@ const OpcrPage = () => {
     API: StrategicPlanAPI,
     entityName: "Strategic Plan",
     FormComponent: StrategicPlanForm.Add,
-    width: "60%",
+    width: "80%",
   };
 
   const propsEditDrawer = {
