@@ -2,17 +2,28 @@ import React from "react";
 import { Avatar, Button, Dropdown, Menu, Space, Tag, Typography } from "antd";
 import { LogoutOutlined } from "@ant-design/icons/lib/icons";
 import UserContext from "../../../service/context/UserContext";
-
-const avatarMenu = (
-  <Menu>
-    <Menu.Item key="logout" danger>
-      <LogoutOutlined /> Logout
-    </Menu.Item>
-  </Menu>
-);
+import { useNavigate } from "react-router-dom";
 
 const CustomAvatar = () => {
+  const navigate = useNavigate();
   const user = React.useContext(UserContext);
+
+  const _logout = () => {
+    sessionStorage.clear();
+    navigate("/login");
+  };
+
+  const _handleClick = (e) => {
+    if (e.key === "logout") _logout();
+  };
+
+  const avatarMenu = (
+    <Menu onClick={_handleClick}>
+      <Menu.Item key="logout" danger>
+        <LogoutOutlined /> Logout
+      </Menu.Item>
+    </Menu>
+  );
 
   return (
     <>

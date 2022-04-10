@@ -30,7 +30,7 @@ const LoginPage = () => {
     onSuccess: (data) => {
       setLoginStatus("success-login");
       user.set(transformUser(data.data));
-      navigate(state?.path || "/home");
+      navigate(state?.path || "/");
     },
     onError: (error) => {
       setLoginStatus("error-login");
