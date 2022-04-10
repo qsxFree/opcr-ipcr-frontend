@@ -1,11 +1,16 @@
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
 import { Button, Col, Form, Input, Row, Select } from "antd";
 import React from "react";
-import { MfoAPI, OfficeAPI } from "../../../../data/call/Resource";
+import {
+  EmployeeProfileAPI,
+  EmployeeRoleAPI,
+  MfoAPI,
+} from "../../../../data/call/Resource";
 import CustomSelect from "../../../component/select/CustomSelect";
 import {
+  employeeProfileOptionMapper,
+  employeeRoleOptionMapper,
   mfoOptionMapper,
-  officeOptionMapper,
 } from "../../../component/select/OptionMapper";
 
 const Add = ({ form }) => {
@@ -37,7 +42,7 @@ const Add = ({ form }) => {
           <>
             {fields.map(({ key, name, ...restField }) => (
               <Row gutter={8} align="middle">
-                <Col span={8}>
+                <Col span={6}>
                   <Form.Item
                     {...restField}
                     label="Success Indicator"
@@ -50,17 +55,32 @@ const Add = ({ form }) => {
                 <Col span={6}>
                   <Form.Item
                     {...restField}
-                    label="Office"
-                    name={[name, "office"]}
+                    label="Accountable (Individual) "
+                    name={[name, "accountable-person"]}
                   >
                     <CustomSelect.SearchSelect
-                      optionMap={officeOptionMapper}
-                      retrieveFn={OfficeAPI.retrieveList}
+                      optionMap={employeeProfileOptionMapper}
+                      retrieveFn={EmployeeProfileAPI.retrieveList}
+                      mode="multiple"
                     />
                   </Form.Item>
                 </Col>
 
-                <Col span={8}>
+                <Col span={6}>
+                  <Form.Item
+                    {...restField}
+                    label="Accountable(By Roles) "
+                    name={[name, "accountable-role"]}
+                  >
+                    <CustomSelect.SearchSelect
+                      optionMap={employeeRoleOptionMapper}
+                      retrieveFn={EmployeeRoleAPI.retrieveList}
+                      mode="multiple"
+                    />
+                  </Form.Item>
+                </Col>
+
+                <Col span={4}>
                   <Form.Item
                     {...restField}
                     label="Allotted Budget"
@@ -69,7 +89,7 @@ const Add = ({ form }) => {
                     <Input />
                   </Form.Item>
                 </Col>
-                <Col span={2}>
+                <Col span={1}>
                   <MinusCircleOutlined onClick={() => remove(name)} />
                 </Col>
               </Row>
@@ -81,7 +101,7 @@ const Add = ({ form }) => {
                 block
                 icon={<PlusOutlined />}
               >
-                Add
+                Add Success Indicator
               </Button>
             </Form.Item>
           </>
