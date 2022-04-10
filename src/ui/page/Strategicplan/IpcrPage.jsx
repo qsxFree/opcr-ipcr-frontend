@@ -1,16 +1,13 @@
 import React from "react";
 import { Table, Row, Col, Input, Button, Space, Typography, Tag } from "antd";
-import { SendOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
-import TableActions from "../../component/action/TableActions";
+import { SendOutlined, ReloadOutlined } from "@ant-design/icons";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
-import CommonDrawer from "../../component/drawer/CommonDrawer";
 import { StrategicPlanAPI } from "../../../data/call/Resource";
-import StrategicPlanForm from "./component/StrategicPlanForm";
-import { useQuery } from "react-query";
-
+import { useMutation } from "react-query";
+import UserContext from "../../../service/context/UserContext";
 
 const column = [
   {
@@ -44,50 +41,21 @@ const column = [
     dataIndex: "success_indicator",
     key: "success_indicator",
   },
-
-  {
-    title: "Actions",
-    fixed: "right",
-    width: 100,
-    render: (data, record) => {
-      return <TableActions hasDelete />;
-    },
-  },
 ];
 const IpcrPage = () => {
   const drawerVisibility = useDrawerVisibility();
   const commons = useTableCommons({});
+  const user = React.useContext(UserContext);
 
-  const queryStrategicPlan = useQuery(
-    "strategic-plan",
-    StrategicPlanAPI.retrieveList,
-    {
-      onSuccess: (data) => {
-        console.log(data.data);
-        commons.tableData.setter(data.data);
-      },
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-  const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
-  const propsAddDrawer = {
-    visible: drawerVisibility.add.visible,
-    onClose: () => drawerVisibility.add.setVisible(false),
-    API: StrategicPlanAPI,
-    entityName: "Strategic Plan",
-    FormComponent: StrategicPlanForm.Add,
-    width: "60%",
-  };
+  const strategicPlanMutation = useMutation(StrategicPlanAPI.retrieveList, {
+    onSuccess: (data) => {
+      commons.tableData.setter(data.data);
+    },
+  });
 
-  const propsEditDrawer = {
-    visible: drawerVisibility.edit.visible,
-    onClose: () => drawerVisibility.edit.setVisible(false),
-    API: StrategicPlanAPI,
-    entityName: "Strategic Plan",
-    FormComponent: StrategicPlanForm.Add,
-    width: "60%",
-  };
+  React.useEffect(() => {
+    strategicPlanMutation.mutate({ employee_id: user.user.id });
+  }, []);
 
   return (
     <DrawerVisiblityProvider
@@ -117,7 +85,9 @@ const IpcrPage = () => {
               <Space>
                 <Button
                   icon={<ReloadOutlined />}
-                  onClick={() => queryStrategicPlan.refetch()}
+                  onClick={() =>
+                    strategicPlanMutation.mutate({ employee_id: user.user.id })
+                  }
                 >
                   Refresh
                 </Button>
@@ -128,16 +98,16 @@ const IpcrPage = () => {
                 >
                   Send Approval
                 </Button>
-
-              
               </Space>
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={commons.tableData.state} />
+          <Table
+            rowSelection={{ type: "checkbox" }}
+            columns={column}
+            dataSource={commons.tableData.state}
+          />
         </div>
-
-        <CommonDrawer.Add {...propsAddDrawer} />
       </SelectedDataProvider>
     </DrawerVisiblityProvider>
   );

@@ -81,7 +81,6 @@ const OpcrPage = () => {
     StrategicPlanAPI.retrieveList,
     {
       onSuccess: (data) => {
-        console.log(data.data);
         commons.tableData.setter(data.data);
       },
       refetchIntervalInBackground: false,
