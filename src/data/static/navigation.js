@@ -6,6 +6,7 @@ import {
   FileDoneOutlined,
   SettingOutlined,
   UserOutlined,
+  ReadOutlined,
 } from "@ant-design/icons/lib/icons";
 
 const navigations = [
@@ -40,10 +41,10 @@ const navigations = [
     uKey: "operationalPlan", //unique readable key
     name: "Operational Plan",
     basePath: "/operationalplan",
-    icon: <SettingOutlined />,
+    icon:  <ReadOutlined /> ,
     role: ["ADMIN"],
   },
-  {
+ /* {
     id: 5,
     uKey: "mediumdevGoals", //unique readable key
     name: "Development Goals",
@@ -120,6 +121,15 @@ const navigations = [
     icon: <UserOutlined />,
     role: ["ADMIN", "HEAD", "GENERAL"],
   },
+  {
+    id: 8,
+    uKey: "option", //unique readable key
+    name: "Option",
+    basePath: "/option",
+    icon:< SettingOutlined />,
+    role: ["ADMIN"],
+  },
+
 
   //Add more navigations here
 ];

@@ -6,6 +6,8 @@ const endpoint = {
   EmployeeRole: "/employee-role",
   Mfo: "/mfo",
   StrategicPlan: "/strategic-plan",
+  User: "/user",
+  Period: "/period",
 };
 
 export const OfficeAPI = {
@@ -47,6 +49,22 @@ export const StrategicPlanAPI = {
   update: CrudInterface.updateFn(endpoint.StrategicPlan),
   remove: CrudInterface.removeFn(endpoint.StrategicPlan),
 };
+
+export const UserAPI = {
+  retrieveList: CrudInterface.retrieveListFn(endpoint.User),
+  retrieve: CrudInterface.retrieveFn(endpoint.User),
+  create: CrudInterface.createFn(endpoint.User),
+  update: CrudInterface.updateFn(endpoint.User),
+  remove: CrudInterface.removeFn(endpoint.User),
+}
+
+export const PeriodAPI = {
+  retrieveList: CrudInterface.retrieveListFn(endpoint.Period),
+  retrieve: CrudInterface.retrieveFn(endpoint.Period),
+  create: CrudInterface.createFn(endpoint.Period),
+  update: CrudInterface.updateFn(endpoint.Period),
+  remove: CrudInterface.removeFn(endpoint.Period),
+}
 
 const Resource = {
   OfficeAPI,

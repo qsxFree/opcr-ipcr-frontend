@@ -2,7 +2,7 @@ import { PageHeader } from "antd";
 import React, { useContext } from "react";
 import ContentTab from "../../component/tabs/ContentTab";
 import EmployeePage from "./EmployeePage";
-import MileStonePage from "./MileStonePage";
+import PeriodPage from "./PeriodPage";
 import OfficePage from "./OfficePage";
 import RolePage from "./RolePage";
 import NavigatorContext from "../../../service/context/NavigatorContext";
@@ -24,9 +24,9 @@ const content = [
     content: <RolePage />,
   },
   {
-    title: "Milestone",
-    key: "milestone",
-    content: <MileStonePage />,
+    title: "Period",
+    key: "period",
+    content: <PeriodPage />,
   },
 ];
 

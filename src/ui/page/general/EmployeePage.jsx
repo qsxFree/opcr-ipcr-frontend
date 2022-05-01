@@ -4,12 +4,28 @@ import TableActions from "../../component/action/TableActions";
 import React from "react";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
-import { EmployeeProfileAPI, OfficeAPI } from "../../../data/call/Resource";
+import { EmployeeProfileAPI, UserAPI } from "../../../data/call/Resource";
 import EmployeeForms from "./components/EmployeeForms";
-import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
-import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
+import DrawerVisibilityContext, {
+  DrawerVisiblityProvider,
+} from "../../../service/context/DrawerVisiblityContext";
+import SelectedDataContext, {
+  SelectedDataProvider,
+} from "../../../service/context/SelectedDataContext";
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useQuery } from "react-query";
+// const characters =
+//   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+
+// function generateString(length) {
+//   let result = " ";
+//   const charactersLength = characters.length;
+//   for (let i = 0; i < length; i++) {
+//     result += characters.charAt(Math.floor(Math.random() * charactersLength));
+//   }
+
+//   return result;
+// }
 
 const dataSource = [
   {
@@ -18,12 +34,8 @@ const dataSource = [
     role: "krezyl",
   },
 ];
+
 const column = [
-  // {
-  //   title: "Username",
-  //   dataIndex: "username",
-  //   key: "username",
-  // },
   {
     title: "Name",
     key: "head",
@@ -45,15 +57,9 @@ const column = [
     dataIndex: "_user",
     key: "account",
     width: 150,
-    render: (data, row) => {
-      return data ? (
-        <Typography.Text strong>{data.username}</Typography.Text>
-      ) : (
-        <Button type="dashed" icon={<PlusOutlined />}>
-          Create
-        </Button>
-      );
-    },
+    render: (data, record) => (
+      <CreateAccountAction data={data} record={record} />
+    ),
   },
   {
     title: "Actions",
@@ -64,6 +70,25 @@ const column = [
     },
   },
 ];
+
+const CreateAccountAction = ({ data, record }) => {
+  const selectedData = React.useContext(SelectedDataContext);
+  const drawerVisibility = React.useContext(DrawerVisibilityContext);
+
+  const _handleClick = () => {
+    selectedData.setData(record);
+    drawerVisibility.view.set(true);
+  };
+
+  return data ? (
+    <Typography.Text strong>{data.username}</Typography.Text>
+  ) : (
+    <Button type="dashed" onClick={_handleClick} icon={<PlusOutlined />}>
+      Create
+    </Button>
+  );
+};
+
 const EmployeePage = () => {
   const drawerVisibility = useDrawerVisibility();
   const commons = useTableCommons({
@@ -82,10 +107,13 @@ const EmployeePage = () => {
     refetchIntervalInBackground: false,
     refetchOnWindowFocus: false,
   });
-
-  const _handleAddButtonClick = () => {
+  const _handleAddButtonClick1 = () => {
     drawerVisibility.add.setVisible(true);
   };
+  const _handleAddButtonClick2 = () => {
+    drawerVisibility.add.setVisible(true);
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -96,6 +124,10 @@ const EmployeePage = () => {
         edit: {
           visible: drawerVisibility.edit.visible,
           set: drawerVisibility.edit.setVisible,
+        },
+        view: {
+          visible: drawerVisibility.view.visible,
+          set: drawerVisibility.view.setVisible,
         },
       }}
     >
@@ -113,7 +145,7 @@ const EmployeePage = () => {
             <Col>
               <Button
                 type="primary"
-                onClick={_handleAddButtonClick}
+                onClick={_handleAddButtonClick1}
                 icon={<PlusOutlined />}
               >
                 Add Employee
@@ -134,12 +166,21 @@ const EmployeePage = () => {
           API={EmployeeProfileAPI}
           FormComponent={EmployeeForms.Add}
         />
+
         <CommonDrawer.Edit
           visible={drawerVisibility.edit.visible}
           onClose={() => drawerVisibility.edit.setVisible(false)}
           entityName="Employee"
           API={EmployeeProfileAPI}
           FormComponent={EmployeeForms.Edit}
+        />
+
+        <CommonDrawer.Add
+          visible={drawerVisibility.view.visible}
+          onClose={() => drawerVisibility.view.setVisible(false)}
+          entityName="Account"
+          API={UserAPI}
+          FormComponent={EmployeeForms.Account}
         />
       </SelectedDataProvider>
     </DrawerVisiblityProvider>

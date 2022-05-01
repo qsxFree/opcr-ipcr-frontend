@@ -55,7 +55,7 @@ const Add = ({ form }) => {
                 <Col span={6}>
                   <Form.Item
                     {...restField}
-                    label="Accountable (Individual) "
+                    label="Accountable (Unit/Section/Individual) "
                     name={[name, "accountable-person"]}
                   >
                     <CustomSelect.SearchSelect
