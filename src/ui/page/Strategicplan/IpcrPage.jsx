@@ -102,11 +102,7 @@ const IpcrPage = () => {
             </Col>
           </Row>
           <br />
-          <Table
-            rowSelection={{ type: "checkbox" }}
-            columns={column}
-            dataSource={commons.tableData.state}
-          />
+          <Table columns={column} dataSource={commons.tableData.state} />
         </div>
       </SelectedDataProvider>
     </DrawerVisiblityProvider>
