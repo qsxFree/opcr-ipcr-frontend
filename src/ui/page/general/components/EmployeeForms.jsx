@@ -1,10 +1,34 @@
 import React from "react";
-import { Form, Input } from "antd";
+import { useState } from "react";
+import { Form, Input, Button, Typography, Divider, Select } from "antd";
 import SelectedDataContext from "../../../../service/context/SelectedDataContext";
 import CustomSelect from "../../../component/select/CustomSelect";
 import { EmployeeRoleAPI } from "../../../../data/call/Resource";
 import { employeeRoleOptionMapper } from "../../../component/select/OptionMapper";
 
+// const Create = ({ form }) => {
+//   const [pass, setPassword] = useState("***");
+
+//   const generatePassword = () => {
+//     const randomPassword =
+//       Math.random().toString(36).slice(2) + Math.random().toString(36).slice(2);
+//     setPassword(randomPassword);
+//     if (navigator.clipboard.writeText(randomPassword)) {
+//       alert("Text copied");
+//     }
+//   };
+//   return (
+//     <Form form={form} layout="vertical">
+//       <Form.Item label="UserName" name="user_name">
+//         <Input />
+//       </Form.Item>
+//       <Form.Item label="Password" name="password">
+//         <Input prefix={pass} value={pass} disabled />
+//       </Form.Item>
+//       <Button onClick={generatePassword}>Generate</Button>
+//     </Form>
+//   );
+// };
 const Add = ({ form }) => {
   return (
     <Form form={form} layout="vertical">
@@ -32,6 +56,7 @@ const Add = ({ form }) => {
     </Form>
   );
 };
+
 const Edit = ({ form }) => {
   const selectedData = React.useContext(SelectedDataContext);
   const data = selectedData.data;
@@ -84,5 +109,37 @@ const Edit = ({ form }) => {
   );
 };
 
-const EmployeeForms = { Add, Edit };
+const Account = ({ form }) => {
+  const selectedData = React.useContext(SelectedDataContext);
+  const data = selectedData.data;
+  form.resetFields();
+  return (
+    <>
+      <Typography.Text strong>
+        Employee : {data.last_name} {data.first_name}
+      </Typography.Text>
+      <Divider />
+      <Form form={form} layout="vertical">
+        <Form.Item label="Username" name="username">
+          <Input />
+        </Form.Item>
+        <Form.Item label="Password" name="password">
+          <Input />
+        </Form.Item>
+
+        <Form.Item label="Access Level" name="role" initialValue={3}>
+          <Select>
+            <Select.Option value={3}>General</Select.Option>
+            <Select.Option value={2}>Head</Select.Option>
+            <Select.Option value={1}>Admin</Select.Option>
+          </Select>
+        </Form.Item>
+
+        <Form.Item name="employee_id" initialValue={data.id}></Form.Item>
+      </Form>
+    </>
+  );
+};
+
+const EmployeeForms = { Add, Edit, Account };
 export default EmployeeForms;

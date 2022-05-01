@@ -15,6 +15,7 @@ import OperationalPlanPage from "../page/Operationalplan/OperationalPlanPage";
 import MediumDevGoalsPage from "../page/MediumDevGoals/MediumDevGoalsPage";
 import GeneralPage from "../page/general/GeneralPage";
 import UserProfilePage from "../page/Profile/UserProfilePage";
+import OptionPage from "../page/options/OptionPage";
 
 //This will serve as the base router for all pages
 const GlobalRoute = () => {
@@ -50,6 +51,8 @@ const GlobalRoute = () => {
             <Route path="/general" element={<GeneralPage />} />
 
             <Route path="/profile" element={<UserProfilePage />} />
+
+            <Route path="/option" element={<OptionPage />} />
           </Route>
 
           <Route path="/login" element={<LoginPage />} />

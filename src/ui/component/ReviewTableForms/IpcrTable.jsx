@@ -97,9 +97,6 @@ const column = [
     render: () => (
       <Space size="middle">
         <p>
-          <EyeOutlined style={{ cursor: "pointer" }} />
-        </p>
-        <p>
           <CheckCircleOutlined
             style={{ cursor: "pointer", fontSize: 15, color: "green" }}
           />

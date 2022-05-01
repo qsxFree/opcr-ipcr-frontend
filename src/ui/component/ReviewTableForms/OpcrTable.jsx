@@ -1,5 +1,9 @@
 import React from "react";
+<<<<<<< HEAD
 import { Table, Input, Button, Upload, Tag, Space, Tooltip } from "antd";
+=======
+import { Table, Input, Button, Upload, Tag, Space } from "antd";
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
 import {
   UploadOutlined,
   EyeOutlined,
@@ -26,29 +30,49 @@ const dataSource = [
       </div>
     ),
     name: "Jocelyn Torio",
+<<<<<<< HEAD
     formname: "OPCR_Kwan",
+=======
+    formname: "OPCR_Torio",
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
   },
   {
     key: "data2",
     date: "10/25/2022",
     department: (
       <div>
+<<<<<<< HEAD
         <Tag color="pink">College of Arts and Sciences</Tag>
       </div>
     ),
     name: "Cassie Cassie",
     formname: "IPCR_Ano",
+=======
+        <Tag color="pink">Management Information System</Tag>
+      </div>
+    ),
+    name: "Raymond Q. Zaratar",
+    formname: "OPCR_Zaratar",
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
   },
   {
     key: "data2",
     date: "10/25/2022",
     department: (
       <div>
+<<<<<<< HEAD
         <Tag color="purple">National Service Training Program OFfice</Tag>
       </div>
     ),
     name: "Cassie Cassie",
     formname: "IPCR_Ano",
+=======
+        <Tag color="purple">National Service Training Program Office</Tag>
+      </div>
+    ),
+    name: "Krezyl Joy Aye",
+    formname: "OPCR_Aye",
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
   },
   {
     key: "data2",
@@ -60,8 +84,13 @@ const dataSource = [
         </Tag>
       </div>
     ),
+<<<<<<< HEAD
     name: "Cassie Cassie",
     formname: "IPCR_Ano",
+=======
+    name: "John Emmanuel Lagrisola",
+    formname: "OPCR_Lagrisola",
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
   },
 ];
 
@@ -91,6 +120,7 @@ const column = [
   {
     title: "Action",
     dataIndex: "action",
+<<<<<<< HEAD
     width: 120,
     render: () => (
       <Space>
@@ -105,6 +135,20 @@ const column = [
         <Tooltip title="Reject">
           <Button icon={<CloseCircleOutlined />} danger />
         </Tooltip>
+=======
+    render: () => (
+      <Space size="middle">
+        <p>
+          <CheckCircleOutlined
+            style={{ cursor: "pointer", fontSize: 15, color: "green" }}
+          />
+        </p>
+        <p>
+          <CloseCircleOutlined
+            style={{ cursor: "pointer", fontSize: 15, color: "red" }}
+          />
+        </p>
+>>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
       </Space>
     ),
   },

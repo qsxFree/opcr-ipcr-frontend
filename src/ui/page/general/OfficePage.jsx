@@ -29,6 +29,7 @@ const column = [
     key: "head",
     width: 250,
     render: (data, row) => {
+      console.log(row);
       return data && data.last_name + ", " + data.first_name;
     },
   },
