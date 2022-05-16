@@ -6,8 +6,6 @@ import AdminLayout from "../page/_base/AdminLayout";
 import HomePage from "../page/home/HomePage";
 import LoginPage from "../page/login/LoginPage";
 import CreateOpcrPage from "../page/createopcr/CreateOpcrPage";
-import IPCRFormsPage from "../page/IPCRForms/IPCRFormsPage";
-import RepositoryPage from "../page/Repository/RepositoryPage";
 import IpcrCreatePage from "../page/createIpcr/IpcrCreatePage";
 import ReviewPmtPage from "../page/pmt/ReviewPmtPage";
 import StrategicPlanPage from "../page/Strategicplan/StrategicPlanPage";
@@ -16,6 +14,7 @@ import MediumDevGoalsPage from "../page/MediumDevGoals/MediumDevGoalsPage";
 import GeneralPage from "../page/general/GeneralPage";
 import UserProfilePage from "../page/Profile/UserProfilePage";
 import OptionPage from "../page/options/OptionPage";
+import ProtectedRoute from "./ProtectedRoute";
 
 //This will serve as the base router for all pages
 const GlobalRoute = () => {
@@ -29,7 +28,14 @@ const GlobalRoute = () => {
     >
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<AdminLayout />}>
+          <Route
+            path="/"
+            element={
+              <ProtectedRoute>
+                <AdminLayout />
+              </ProtectedRoute>
+            }
+          >
             <Route path="home" element={<HomePage />} />
 
             <Route path="strategicplan" element={<StrategicPlanPage />} />
