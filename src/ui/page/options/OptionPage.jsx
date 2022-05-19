@@ -10,6 +10,7 @@ import {
   Divider,
   Modal,
   notification,
+  Alert,
 } from "antd";
 import React, { useContext } from "react";
 import NavigatorContext from "../../../service/context/NavigatorContext";
@@ -29,7 +30,7 @@ const OptionPage = () => {
 
   let [form] = Form.useForm();
 
-  const periodMutator = useMutation(PeriodAPI.retrieveList, {
+  const periodMutator = useMutation(PeriodAPI.activatePeriod, {
     onSuccess: (data) => {
       console.log(data.data);
       sessionStorage.removeItem("activePeriod");
@@ -70,6 +71,23 @@ const OptionPage = () => {
 
       <div className="base-container">
         <Form form={form} layout="vertical">
+          <Alert
+            type="warning"
+            message="WARNING"
+            showIcon
+            description={
+              <Typography.Text>
+                When updating to new active period, all the unprocessed and
+                processed data will be reset. Data in{" "}
+                <Typography.Text strong>Strategic Plan</Typography.Text> and{" "}
+                <Typography.Text strong>Forms Review</Typography.Text> are being
+                filtered based on the active{" "}
+                <Typography.Text code>period</Typography.Text>. In short, the
+                whole system will be affected if you change the current period.
+              </Typography.Text>
+            }
+          />
+          <br />
           <Form.Item
             label="Active Period"
             name="period"

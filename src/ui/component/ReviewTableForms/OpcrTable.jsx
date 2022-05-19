@@ -6,7 +6,6 @@ import {
   Typography,
   Row,
   Space,
-  Tag,
   Col,
   Tooltip,
   notification,
@@ -24,14 +23,6 @@ import { StrategicPlanAPI } from "../../../data/call/Resource";
 import OpcrTypeTags from "../tags/OpcrTypeTags";
 import createOpcrPdf from "../../../service/utils/report/opcrReport";
 import { useSessionStorageState } from "ahooks";
-
-const props = {
-  name: "file",
-  action: "https://www.mocky.io/v2/5cc8019d300000980a055e76",
-  headers: {
-    authorization: "authorization-text",
-  },
-};
 
 const column = [
   {
@@ -181,9 +172,9 @@ const OpcrTable = () => {
       const role = head._role;
 
       createOpcrPdf({
-        completeName: `${head.last_name} ${
-          head.middle_name && `${head.middle_name.charAt(0)}.`
-        } ${head.first_name}`,
+        completeName: `${head.first_name} ${
+          head.middle_name ? `${head.middle_name.charAt(0)}.` : ""
+        } ${head.last_name}`,
         positionRank: role.role,
         officeName: office.name,
         period: activePeriod.description,
