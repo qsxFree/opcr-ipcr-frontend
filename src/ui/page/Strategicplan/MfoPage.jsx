@@ -105,6 +105,10 @@ const MfoPage = () => {
     mfoMutator.mutate();
   };
 
+  const _onSearch = (value) => {
+    mfoMutator.mutate({ search: value });
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -128,7 +132,11 @@ const MfoPage = () => {
           <Row justify="space-between">
             <Col>
               <Space>
-                <Input.Search placeholder="Search" allowClear />
+                <Input.Search
+                  placeholder="Search"
+                  allowClear
+                  onSearch={_onSearch}
+                />
                 <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>

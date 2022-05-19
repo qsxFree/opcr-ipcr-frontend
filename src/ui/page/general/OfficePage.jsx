@@ -79,6 +79,10 @@ const OfficePage = () => {
     officeMutator.mutate();
   };
 
+  const _onSearch = (value) => {
+    officeMutator.mutate({ search: value });
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -102,7 +106,11 @@ const OfficePage = () => {
           <Row justify="space-between">
             <Col>
               <Space>
-                <Input.Search placeholder="Search" allowClear />
+                <Input.Search
+                  placeholder="Search"
+                  allowClear
+                  onSearch={_onSearch}
+                />
                 <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>

@@ -113,6 +113,7 @@ const EmployeePage = () => {
   const _handleAddButtonClick2 = () => {
     drawerVisibility.add.setVisible(true);
   };
+
   React.useEffect(() => {
     employeeMutator.mutate();
   }, []);
@@ -120,6 +121,11 @@ const EmployeePage = () => {
   const _handleRefresh = () => {
     employeeMutator.mutate();
   };
+
+  const _onSearch = (value) => {
+    employeeMutator.mutate({ search: value });
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -146,7 +152,11 @@ const EmployeePage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Space>
-              <Input.Search placeholder="Search" allowClear />
+              <Input.Search
+                placeholder="Search"
+                allowClear
+                onSearch={_onSearch}
+              />
               <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                 Refresh
               </Button>

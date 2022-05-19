@@ -66,6 +66,10 @@ const RolePage = () => {
     RoleMutator.mutate();
   };
 
+  const _onSearch = (value) => {
+    RoleMutator.mutate({ search: value });
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -89,7 +93,11 @@ const RolePage = () => {
           <Row justify="space-between">
             <Col>
               <Space>
-                <Input.Search placeholder="Search" allowClear />
+                <Input.Search
+                  placeholder="Search"
+                  allowClear
+                  onSearch={_onSearch}
+                />
                 <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>

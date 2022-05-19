@@ -72,6 +72,9 @@ export const PeriodAPI = {
   create: CrudInterface.createFn(endpoint.Period),
   update: CrudInterface.updateFn(endpoint.Period),
   remove: CrudInterface.removeFn(endpoint.Period),
+
+  activatePeriod: CrudInterface.updateFn(endpoint.Period + "/activate"),
+  getActivePeriod: CrudInterface.retrieveFn(endpoint.Period + "/activate"),
 };
 
 const Resource = {

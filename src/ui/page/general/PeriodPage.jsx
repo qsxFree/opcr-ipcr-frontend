@@ -69,6 +69,10 @@ const PeriodPage = () => {
     periodMutator.mutate();
   };
 
+  const _onSearch = (value) => {
+    periodMutator.mutate({ search: value });
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -81,7 +85,11 @@ const PeriodPage = () => {
       <div className="base-container">
         <Row justify="space-between">
           <Space>
-            <Input.Search placeholder="Search" allowClear />
+            <Input.Search
+              placeholder="Search"
+              allowClear
+              onSearch={_onSearch}
+            />
             <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
               Refresh
             </Button>
