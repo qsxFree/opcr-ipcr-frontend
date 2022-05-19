@@ -9,16 +9,21 @@ import {
   Tag,
   Col,
   Tooltip,
+  notification,
+  Modal,
 } from "antd";
 import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  PrinterOutlined,
   ReloadOutlined,
 } from "@ant-design/icons";
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useMutation } from "react-query";
 import { StrategicPlanAPI } from "../../../data/call/Resource";
 import OpcrTypeTags from "../tags/OpcrTypeTags";
+import createOpcrPdf from "../../../service/utils/report/opcrReport";
+import { useSessionStorageState } from "ahooks";
 
 const props = {
   name: "file",
@@ -46,30 +51,12 @@ const column = [
     render: (data, record) =>
       `${record._office._head.last_name} ${record._office._head.first_name}`,
   },
-
-  {
-    title: "Action",
-    dataIndex: "action",
-    width: 120,
-    render: () => (
-      <Space>
-        <Tooltip title="Approve">
-          <Button
-            style={{ borderColor: "#73d13d" }}
-            icon={<CheckCircleOutlined style={{ color: "#73d13d" }} />}
-          />
-        </Tooltip>
-
-        <Tooltip title="Reject">
-          <Button icon={<CloseCircleOutlined />} danger />
-        </Tooltip>
-      </Space>
-    ),
-  },
 ];
 
 const OpcrTable = () => {
   const [mainDataSource, setMainDataSource] = React.useState([]);
+  const [activePeriod, setActivePeriod] =
+    useSessionStorageState("activePeriod");
   const commons = useTableCommons();
 
   const expandedRowRender = (record, index, indent, expanded) => {
@@ -127,6 +114,24 @@ const OpcrTable = () => {
     },
   });
 
+  const updateStrategicPlanMutator = useMutation(StrategicPlanAPI.updateOpcr, {
+    onSuccess: (data) => {
+      _handleRefresh();
+      notification.success({
+        message: "Success",
+        description: "Strategic Plan has been updated",
+        placement: "bottomRight",
+      });
+    },
+    onError: (err) => {
+      notification.error({
+        message: "Error",
+        description: "Error on updating strategic plan",
+        placement: "bottomRight",
+      });
+    },
+  });
+
   React.useEffect(() => {
     opcrMutator.mutate();
   }, []);
@@ -134,6 +139,104 @@ const OpcrTable = () => {
   const _handleRefresh = () => {
     opcrMutator.mutate();
   };
+
+  const _handleApprove = (record) => {
+    return () => {
+      Modal.confirm({
+        title: `Are you sure you want to approve ${record._office.code}'s OPCR?`,
+        content:
+          "Once approved, changes cannot be undone. Do you want to proceed?",
+        onOk: () =>
+          updateStrategicPlanMutator.mutateAsync({
+            id: 2,
+            data: mainDataSource
+              .filter((value) => value._office.id === record._office.id)
+              .map((value) => value.id),
+          }),
+      });
+    };
+  };
+  const _handleReject = (record) => {
+    return () => {
+      Modal.confirm({
+        title: `Are you sure you want to reject ${record._office.code}'s OPCR?`,
+        content:
+          "Once approved, changes cannot be undone. Do you want to proceed?",
+        onOk: () =>
+          updateStrategicPlanMutator.mutateAsync({
+            id: 0,
+            data: mainDataSource
+              .filter((value) => value._office.id === record._office.id)
+              .map((value) => value.id),
+          }),
+      });
+    };
+  };
+
+  const _handleOnPrint = (record) => {
+    return () => {
+      console.log(record);
+      const office = record[0]._office;
+      const head = office._head;
+      const role = head._role;
+
+      createOpcrPdf({
+        completeName: `${head.last_name} ${
+          head.middle_name && `${head.middle_name.charAt(0)}.`
+        } ${head.first_name}`,
+        positionRank: role.role,
+        officeName: office.name,
+        period: activePeriod.description,
+        _approved_by: record[0]._approved_by,
+        date_approved: record[0].date_approved,
+        record: record,
+      });
+    };
+  };
+
+  const colExtension = [
+    ...column,
+    {
+      title: "Action",
+      width: 120,
+      render: (data, record) => {
+        const filteredStratPlan = mainDataSource.filter(
+          (value) => value._office.id === record._office.id
+        );
+
+        const toBePrint =
+          filteredStratPlan.filter((value) => value.status === 1).length > 0;
+
+        return !toBePrint ? (
+          <Button
+            type="primary"
+            icon={<PrinterOutlined />}
+            onClick={_handleOnPrint(filteredStratPlan)}
+          >
+            Print
+          </Button>
+        ) : (
+          <Space>
+            <Tooltip title="Approve">
+              <Button
+                style={{ borderColor: "#73d13d" }}
+                icon={<CheckCircleOutlined style={{ color: "#73d13d" }} />}
+                onClick={_handleApprove(record)}
+              />
+            </Tooltip>
+
+            <Tooltip title="Reject">
+              <Button
+                icon={<CloseCircleOutlined />}
+                danger
+                onClick={_handleReject(record)}
+              />
+            </Tooltip>
+          </Space>
+        );
+      },
+    },
+  ];
 
   return (
     <>
@@ -153,7 +256,7 @@ const OpcrTable = () => {
           dataSource={commons.tableData.state}
           expandable={{ expandedRowRender }}
           loading={opcrMutator.isLoading}
-          columns={column}
+          columns={colExtension}
         />
       </div>
     </>

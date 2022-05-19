@@ -1,5 +1,16 @@
 import React from "react";
-import { Table, Row, Col, Input, Button, Space, Typography, Tag } from "antd";
+import {
+  Table,
+  Row,
+  Col,
+  Input,
+  Button,
+  Space,
+  Typography,
+  Tag,
+  Modal,
+  notification,
+} from "antd";
 import { SendOutlined, PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import TableActions from "../../component/action/TableActions";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
@@ -63,11 +74,31 @@ const OpcrPage = () => {
 
   const strategicPlanMutator = useMutation(StrategicPlanAPI.retrieveList, {
     onSuccess: (data) => {
-      commons.tableData.setter(data.data);
+      commons.tableData.setter(
+        data.data.map((item) => {
+          return { key: item.id, ...item };
+        })
+      );
     },
   });
 
-  const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
+  const sendForApprovalMutator = useMutation(StrategicPlanAPI.updateOpcr, {
+    onSuccess: (data) => {
+      commons.selectedIndex.setter([]);
+      notification.success({
+        message: "Success",
+        description: "Strategic Plan has been sent for approval",
+        placement: "bottomRight",
+      });
+    },
+    onError: (err) => {
+      notification.error({
+        message: "Error",
+        description: "Error on sending request",
+        placement: "bottomRight",
+      });
+    },
+  });
 
   const propsAddDrawer = {
     visible: drawerVisibility.add.visible,
@@ -98,14 +129,45 @@ const OpcrPage = () => {
       }
     : {};
 
+  React.useEffect(() => {
+    strategicPlanMutator.mutate();
+  }, []);
+
+  const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
+
+  const _handleRefresh = () => {
+    strategicPlanMutator.mutate();
+  };
+
+  const _handleRowSelect = (selected, selectedRows, changeRows) => {
+    commons.selectedIndex.setter(selectedRows.map((row) => row.id));
+  };
+
+  const _handleSendApproval = () => {
+    if (commons.selectedIndex.state.length > 0) {
+      Modal.confirm({
+        title: `Send request for approval for ${commons.selectedIndex.state.length} item/s?`,
+        content:
+          "Once confirmed, changes cannot be undone. Do you want to proceed?",
+        onOk: () =>
+          sendForApprovalMutator.mutateAsync({
+            id: 1, // 1 stands for "PENDING"
+            data: commons.selectedIndex.state,
+          }),
+      });
+    }
+  };
+
   const utilityButtons = canEdit && (
     <>
       <Button
         type="primary"
-        // onClick={_handleAddButtonClick}
+        onClick={_handleSendApproval}
         icon={<SendOutlined />}
       >
-        Send Approval
+        Send Approval{" "}
+        {commons.selectedIndex.state.length !== 0 &&
+          `(${commons.selectedIndex.state.length})`}
       </Button>
 
       <Button
@@ -117,14 +179,6 @@ const OpcrPage = () => {
       </Button>
     </>
   );
-
-  React.useEffect(() => {
-    strategicPlanMutator.mutate();
-  }, []);
-
-  const _handleRefresh = () => {
-    strategicPlanMutator.mutate();
-  };
 
   return (
     <DrawerVisiblityProvider
@@ -162,6 +216,10 @@ const OpcrPage = () => {
           <br />
           <Table
             columns={[...column, extendedColumn]}
+            rowSelection={{
+              onChange: _handleRowSelect,
+              selectedRowKeys: commons.selectedIndex.state,
+            }}
             dataSource={commons.tableData.state}
             loading={strategicPlanMutator.isLoading}
           />

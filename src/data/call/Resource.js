@@ -56,6 +56,9 @@ export const StrategicPlanAPI = {
   retrieveToBeApprovedOPCR: CrudInterface.retrieveListFn(
     endpoint.StrategicPlan + "/opcr"
   ),
+
+  updateIpcr: CrudInterface.updateFn(endpoint.StrategicPlan + "/ipcr"),
+  updateOpcr: CrudInterface.updateFn(endpoint.StrategicPlan + "/opcr"),
 };
 
 export const UserAPI = {

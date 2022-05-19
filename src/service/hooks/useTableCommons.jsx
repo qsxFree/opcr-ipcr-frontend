@@ -12,7 +12,7 @@ const useTableCommons = (selectedDataTemplate) => {
   const [totalResult, setTotalResult] = useState(0);
   const [selectedData, setSelectedData] = useState(selectedDataTemplate);
   //const [loadingFromSearch, setLoadingFromSearch] = useState(false);
-  //const [selectedIndex, setSelectedIndex] = useState([]); // to identify the selected indeces
+  const [selectedIndex, setSelectedIndex] = useState([]); // to identify the selected indeces
 
   //   const [metadata, setMetadata] = useState({
   //     addedBy: "",
@@ -29,7 +29,7 @@ const useTableCommons = (selectedDataTemplate) => {
     //   loadingFromSearch,
     //   setLoadingFromSearch
     // ),
-    //selectedIndex: new StateTemplate(selectedIndex, setSelectedIndex),
+    selectedIndex: new StateTemplate(selectedIndex, setSelectedIndex),
     //metadata: new StateTemplate(metadata, setMetadata),
   };
 };
