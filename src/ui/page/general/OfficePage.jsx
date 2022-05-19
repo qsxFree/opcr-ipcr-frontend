@@ -1,7 +1,7 @@
 import React from "react";
-import { Table, Row, Col, Input, Button } from "antd";
+import { Table, Row, Col, Input, Button, Space } from "antd";
 import TableActions from "../../component/action/TableActions";
-import { PlusOutlined } from "@ant-design/icons";
+import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
@@ -9,7 +9,7 @@ import { SelectedDataProvider } from "../../../service/context/SelectedDataConte
 import CommonDrawer from "../../component/drawer/CommonDrawer";
 import OfficeForms from "./components/OfficeForms";
 import { OfficeAPI } from "../../../data/call/Resource";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
 
 const column = [
   {
@@ -64,13 +64,20 @@ const OfficePage = () => {
     drawerVisibility.add.setVisible(true);
   };
 
-  const queryOffice = useQuery("office", OfficeAPI.retrieveList, {
+  const officeMutator = useMutation(OfficeAPI.retrieveList, {
     onSuccess: (data) => {
+      console.log(data.data);
       commons.tableData.setter(data.data);
     },
-    refetchIntervalInBackground: false,
-    refetchOnWindowFocus: false,
   });
+
+  React.useEffect(() => {
+    officeMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    officeMutator.mutate();
+  };
 
   return (
     <DrawerVisiblityProvider
@@ -94,7 +101,12 @@ const OfficePage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Col>
-              <Input.Search />
+              <Space>
+                <Input.Search placeholder="Search" allowClear />
+                <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                  Refresh
+                </Button>
+              </Space>
             </Col>
             <Col>
               <Button
@@ -110,7 +122,7 @@ const OfficePage = () => {
           <Table
             columns={column}
             dataSource={commons.tableData.state}
-            loading={queryOffice.isLoading}
+            loading={officeMutator.isLoading}
           />
         </div>
 

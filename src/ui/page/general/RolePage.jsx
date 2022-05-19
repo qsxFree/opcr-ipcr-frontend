@@ -1,6 +1,6 @@
 import React from "react";
-import { Table, Row, Col, Input, Button, Typography } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Row, Col, Input, Button, Typography, Space } from "antd";
+import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import TableActions from "../../component/action/TableActions";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
@@ -10,6 +10,8 @@ import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblit
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import useTableCommons from "../../../service/hooks/useTableCommons";
 import { useQuery } from "react-query";
+import { RoleAPI } from "../../../data/call/Resource";
+import { useMutation } from "react-query";
 
 const column = [
   {
@@ -46,22 +48,24 @@ const RolePage = () => {
   const commons = useTableCommons({
     code: null,
   });
-
-  const queryEmployeeRole = useQuery(
-    "employee-role",
-    EmployeeRoleAPI.retrieveList,
-    {
-      onSuccess: (data) => {
-        commons.tableData.setter(data.data);
-      },
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-    }
-  );
-
   const _handleAddButtonClick = () => {
     drawerVisibility.add.setVisible(true);
   };
+  const RoleMutator = useMutation(EmployeeRoleAPI.retrieveList, {
+    onSuccess: (data) => {
+      console.log(data.data);
+      commons.tableData.setter(data.data);
+    },
+  });
+
+  React.useEffect(() => {
+    RoleMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    RoleMutator.mutate();
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -84,7 +88,12 @@ const RolePage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Col>
-              <Input.Search />
+              <Space>
+                <Input.Search placeholder="Search" allowClear />
+                <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                  Refresh
+                </Button>
+              </Space>
             </Col>
             <Col>
               <Button
@@ -100,7 +109,7 @@ const RolePage = () => {
           <Table
             columns={column}
             dataSource={commons.tableData.state}
-            loading={queryEmployeeRole.isLoading}
+            loading={RoleMutator.isLoading}
           />
         </div>
         <CommonDrawer.Add

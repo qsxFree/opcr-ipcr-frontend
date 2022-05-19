@@ -29,6 +29,7 @@ const LoginPage = () => {
   const loginMutation = useMutation(AuthenticationAPI.login, {
     onSuccess: (data) => {
       setLoginStatus("success-login");
+      console.log(data.data);
       user.set(transformUser(data.data));
       navigate(state?.path || "/");
     },

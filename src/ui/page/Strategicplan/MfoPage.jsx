@@ -13,6 +13,7 @@ import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblit
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import moment from "moment";
 import useRoleChecker from "../../../service/hooks/useRoleChecker";
+import { useMutation } from "react-query";
 
 const column = [
   {
@@ -53,12 +54,10 @@ const MfoPage = () => {
   const headCheck = useRoleChecker(["ADMIN"]);
   const canEdit = headCheck.check();
 
-  const queryMfo = useQuery("mfo", MfoAPI.retrieveList, {
+  const mfoMutator = useMutation(MfoAPI.retrieveList, {
     onSuccess: (data) => {
       commons.tableData.setter(data.data);
     },
-    refetchIntervalInBackground: false,
-    refetchOnWindowFocus: false,
   });
 
   const propsAddDrawer = {
@@ -98,6 +97,14 @@ const MfoPage = () => {
       }
     : {};
 
+  React.useEffect(() => {
+    mfoMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    mfoMutator.mutate();
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -120,16 +127,16 @@ const MfoPage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Col>
-              <Input.Search />
-            </Col>
-            <Col>
               <Space>
-                <Button
-                  icon={<ReloadOutlined />}
-                  onClick={() => queryMfo.refetch()}
-                >
+                <Input.Search placeholder="Search" allowClear />
+                <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>
+              </Space>
+            </Col>
+
+            <Col>
+              <Space>
                 {canEdit && (
                   <Button
                     type="primary"
@@ -146,6 +153,7 @@ const MfoPage = () => {
           <Table
             columns={[...column, extendedColumn]}
             dataSource={commons.tableData.state}
+            loading={mfoMutator.isLoading}
           />
           {canEdit && (
             <>

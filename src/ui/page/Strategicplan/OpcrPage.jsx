@@ -7,10 +7,11 @@ import useTableCommons from "../../../service/hooks/useTableCommons";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
 import { SelectedDataProvider } from "../../../service/context/SelectedDataContext";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
+import OpcrTypeTags from "../../component/tags/OpcrTypeTags";
 import { StrategicPlanAPI } from "../../../data/call/Resource";
 import StrategicPlanForm from "./component/StrategicPlanForm";
-import { useQuery } from "react-query";
 import useRoleChecker from "../../../service/hooks/useRoleChecker";
+import { useMutation } from "react-query";
 
 const column = [
   {
@@ -29,25 +30,9 @@ const column = [
     title: "Type",
     dataIndex: "type",
     key: "type",
-    render: (data, record) => {
-      console.log(data);
-      let type = null;
-      if (data === 1) type = <Tag color="geekblue">Strategic Priority</Tag>;
-      else if (data === 2) type = <Tag color="cyan">Core Functionality</Tag>;
-      else if (data === 3)
-        type = <Tag color="volcano">Supporting Functionality</Tag>;
-      return type;
-    },
+    render: (data, record) => <OpcrTypeTags data={data} />,
   },
-  // {
-  //   title: "Details",
-  //   dataIndex: "details",
-  //   key: "details",
-  //   width: 100,
-  //   render: (data, record) => {
-  //     return <Button>View Details</Button>;
-  //   },
-  // },
+
   {
     title: "Success Indicator",
     dataIndex: "success_indicator",
@@ -76,17 +61,12 @@ const OpcrPage = () => {
   const headCheck = useRoleChecker(["ADMIN", "HEAD"]);
   const canEdit = headCheck.check();
 
-  const queryStrategicPlan = useQuery(
-    "strategic-plan",
-    StrategicPlanAPI.retrieveList,
-    {
-      onSuccess: (data) => {
-        commons.tableData.setter(data.data);
-      },
-      refetchIntervalInBackground: false,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const strategicPlanMutator = useMutation(StrategicPlanAPI.retrieveList, {
+    onSuccess: (data) => {
+      commons.tableData.setter(data.data);
+    },
+  });
+
   const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
 
   const propsAddDrawer = {
@@ -138,6 +118,14 @@ const OpcrPage = () => {
     </>
   );
 
+  React.useEffect(() => {
+    strategicPlanMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    strategicPlanMutator.mutate();
+  };
+
   return (
     <DrawerVisiblityProvider
       value={{
@@ -160,24 +148,22 @@ const OpcrPage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Col>
-              <Input.Search />
-            </Col>
-            <Col>
               <Space>
-                <Button
-                  icon={<ReloadOutlined />}
-                  onClick={() => queryStrategicPlan.refetch()}
-                >
+                <Input.Search />
+                <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>
-                {utilityButtons}
               </Space>
+            </Col>
+            <Col>
+              <Space>{utilityButtons}</Space>
             </Col>
           </Row>
           <br />
           <Table
             columns={[...column, extendedColumn]}
             dataSource={commons.tableData.state}
+            loading={strategicPlanMutator.isLoading}
           />
         </div>
 

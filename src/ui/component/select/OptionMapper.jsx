@@ -43,7 +43,10 @@ export const employeeProfileOptionMapper = (data) => (
 export const employeeRoleOptionMapper = (data) => (
   <Select.Option key={data.id} value={data.id} data={data}>
     <Tooltip placement="topLeft" title={`${data.name}`}>
-      <Typography.Text>{data.role}</Typography.Text>
+      <Typography.Text>
+        <Typography.Text strong>{data._office.code}</Typography.Text> -
+        {data.role}
+      </Typography.Text>
     </Tooltip>
   </Select.Option>
 );

@@ -15,7 +15,12 @@ import {
 import TableActions from "../../component/action/TableActions";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
 import { DrawerVisiblityProvider } from "../../../service/context/DrawerVisiblityContext";
-import { PlusOutlined, EyeOutlined, DeleteOutlined } from "@ant-design/icons";
+import {
+  PlusOutlined,
+  EyeOutlined,
+  DeleteOutlined,
+  ReloadOutlined,
+} from "@ant-design/icons";
 import CommonDrawer from "../../component/drawer/CommonDrawer";
 import PeriodForm from "./components/PeriodForm";
 import useTableCommons from "../../../service/hooks/useTableCommons";
@@ -48,7 +53,7 @@ const PeriodPage = () => {
     drawerVisibility.add.setVisible(true);
   };
 
-  const mutatorPeriod = useMutation(PeriodAPI.retrieveList, {
+  const periodMutator = useMutation(PeriodAPI.retrieveList, {
     onSuccess: (data) => {
       commons.tableData.setter(data.data);
     },
@@ -58,8 +63,11 @@ const PeriodPage = () => {
   });
 
   React.useEffect(() => {
-    mutatorPeriod.mutate();
+    periodMutator.mutate();
   }, []);
+  const _handleRefresh = () => {
+    periodMutator.mutate();
+  };
 
   return (
     <DrawerVisiblityProvider
@@ -72,9 +80,12 @@ const PeriodPage = () => {
     >
       <div className="base-container">
         <Row justify="space-between">
-          <Col>
-            <Input.Search />
-          </Col>
+          <Space>
+            <Input.Search placeholder="Search" allowClear />
+            <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+              Refresh
+            </Button>
+          </Space>
           <Col>
             <Button
               type="primary"
@@ -85,8 +96,12 @@ const PeriodPage = () => {
             </Button>
           </Col>
         </Row>
-        <br></br>
-        <Table dataSource={commons.tableData.state} columns={columns} />
+        <br />
+        <Table
+          dataSource={commons.tableData.state}
+          columns={columns}
+          loading={periodMutator.isLoading}
+        />
       </div>
 
       <CommonDrawer.Add

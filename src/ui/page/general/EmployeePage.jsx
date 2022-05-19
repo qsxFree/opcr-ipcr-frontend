@@ -1,5 +1,5 @@
-import { Table, Row, Col, Input, Button, Typography } from "antd";
-import { PlusOutlined } from "@ant-design/icons";
+import { Table, Row, Col, Input, Button, Typography, Space } from "antd";
+import { PlusOutlined, ReloadOutlined } from "@ant-design/icons";
 import TableActions from "../../component/action/TableActions";
 import React from "react";
 import useDrawerVisibility from "../../../service/hooks/useDrawerVisibility";
@@ -13,7 +13,8 @@ import SelectedDataContext, {
   SelectedDataProvider,
 } from "../../../service/context/SelectedDataContext";
 import useTableCommons from "../../../service/hooks/useTableCommons";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
+
 // const characters =
 //   "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 
@@ -100,20 +101,25 @@ const EmployeePage = () => {
     _office: null,
   });
 
-  const queryEmployee = useQuery("employee", EmployeeProfileAPI.retrieveList, {
+  const employeeMutator = useMutation(EmployeeProfileAPI.retrieveList, {
     onSuccess: (data) => {
       commons.tableData.setter(data.data);
     },
-    refetchIntervalInBackground: false,
-    refetchOnWindowFocus: false,
-  });
+  }); // pag may nakita kayo na useQuery, eto ipalit nyo
+
   const _handleAddButtonClick1 = () => {
     drawerVisibility.add.setVisible(true);
   };
   const _handleAddButtonClick2 = () => {
     drawerVisibility.add.setVisible(true);
   };
+  React.useEffect(() => {
+    employeeMutator.mutate();
+  }, []);
 
+  const _handleRefresh = () => {
+    employeeMutator.mutate();
+  };
   return (
     <DrawerVisiblityProvider
       value={{
@@ -139,9 +145,12 @@ const EmployeePage = () => {
       >
         <div className="base-container">
           <Row justify="space-between">
-            <Col>
-              <Input.Search />
-            </Col>
+            <Space>
+              <Input.Search placeholder="Search" allowClear />
+              <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                Refresh
+              </Button>
+            </Space>
             <Col>
               <Button
                 type="primary"
@@ -156,7 +165,7 @@ const EmployeePage = () => {
           <Table
             columns={column}
             dataSource={commons.tableData.state}
-            loading={queryEmployee.isLoading}
+            loading={employeeMutator.isLoading}
           />
         </div>
         <CommonDrawer.Add

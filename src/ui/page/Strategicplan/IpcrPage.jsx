@@ -47,16 +47,21 @@ const IpcrPage = () => {
   const commons = useTableCommons({});
   const user = React.useContext(UserContext);
 
-  const strategicPlanMutation = useMutation(StrategicPlanAPI.retrieveList, {
+  const strategicPlanMutator = useMutation(StrategicPlanAPI.retrieveList, {
     onSuccess: (data) => {
-      console.log(data.data);
       commons.tableData.setter(data.data);
     },
   });
 
+  const _handleAddButtonClick = () => drawerVisibility.add.setVisible(true);
+
   React.useEffect(() => {
-    strategicPlanMutation.mutate({ employee_id: user.user.id });
+    strategicPlanMutator.mutate({ employee_id: user.user.id });
   }, []);
+
+  const _handleRefresh = () => {
+    strategicPlanMutator.mutate({ employee_id: user.user.id });
+  };
 
   return (
     <DrawerVisiblityProvider
@@ -80,18 +85,15 @@ const IpcrPage = () => {
         <div className="base-container">
           <Row justify="space-between">
             <Col>
-              <Input.Search />
+              <Space>
+                <Input.Search placeholder="Search" allowClear />
+                <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                  Refresh
+                </Button>
+              </Space>
             </Col>
             <Col>
               <Space>
-                <Button
-                  icon={<ReloadOutlined />}
-                  onClick={() =>
-                    strategicPlanMutation.mutate({ employee_id: user.user.id })
-                  }
-                >
-                  Refresh
-                </Button>
                 <Button
                   type="primary"
                   //onClick={_handleAddButtonClick}
@@ -103,7 +105,11 @@ const IpcrPage = () => {
             </Col>
           </Row>
           <br />
-          <Table columns={column} dataSource={commons.tableData.state} />
+          <Table
+            columns={column}
+            dataSource={commons.tableData.state}
+            loading={strategicPlanMutator.isLoading}
+          />
         </div>
       </SelectedDataProvider>
     </DrawerVisiblityProvider>

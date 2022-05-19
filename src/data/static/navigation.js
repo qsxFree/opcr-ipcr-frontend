@@ -41,10 +41,10 @@ const navigations = [
     uKey: "operationalPlan", //unique readable key
     name: "Operational Plan",
     basePath: "/operationalplan",
-    icon:  <ReadOutlined /> ,
+    icon: <ReadOutlined />,
     role: ["ADMIN"],
   },
- /* {
+  /* {
     id: 5,
     uKey: "mediumdevGoals", //unique readable key
     name: "Development Goals",
@@ -111,7 +111,7 @@ const navigations = [
     name: "Review Forms",
     basePath: "/reviewform",
     icon: <FileDoneOutlined />,
-    role: ["ADMIN", "PMT"],
+    role: ["ADMIN", "PMT", "HEAD"],
   },
   {
     id: 7,
@@ -126,10 +126,9 @@ const navigations = [
     uKey: "option", //unique readable key
     name: "Option",
     basePath: "/option",
-    icon:< SettingOutlined />,
+    icon: <SettingOutlined />,
     role: ["ADMIN"],
   },
-
 
   //Add more navigations here
 ];

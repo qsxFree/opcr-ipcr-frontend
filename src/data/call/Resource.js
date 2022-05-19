@@ -48,6 +48,14 @@ export const StrategicPlanAPI = {
   create: CrudInterface.createFn(endpoint.StrategicPlan),
   update: CrudInterface.updateFn(endpoint.StrategicPlan),
   remove: CrudInterface.removeFn(endpoint.StrategicPlan),
+
+  retrieveToBeApprovedIPCR: CrudInterface.retrieveListFn(
+    endpoint.StrategicPlan + "/ipcr"
+  ),
+
+  retrieveToBeApprovedOPCR: CrudInterface.retrieveListFn(
+    endpoint.StrategicPlan + "/opcr"
+  ),
 };
 
 export const UserAPI = {
@@ -56,7 +64,7 @@ export const UserAPI = {
   create: CrudInterface.createFn(endpoint.User),
   update: CrudInterface.updateFn(endpoint.User),
   remove: CrudInterface.removeFn(endpoint.User),
-}
+};
 
 export const PeriodAPI = {
   retrieveList: CrudInterface.retrieveListFn(endpoint.Period),
@@ -64,7 +72,7 @@ export const PeriodAPI = {
   create: CrudInterface.createFn(endpoint.Period),
   update: CrudInterface.updateFn(endpoint.Period),
   remove: CrudInterface.removeFn(endpoint.Period),
-}
+};
 
 const Resource = {
   OfficeAPI,

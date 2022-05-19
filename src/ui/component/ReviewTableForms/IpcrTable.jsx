@@ -1,127 +1,150 @@
 import React from "react";
-import { Table, Input, Button, Upload, Tag, Space } from "antd";
 import {
-  UploadOutlined,
-  EditOutlined,
-  EyeOutlined,
-  DeleteOutlined,
+  Table,
+  Input,
+  Button,
+  Tag,
+  Space,
+  Tooltip,
+  Typography,
+  Row,
+  Col,
+} from "antd";
+import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  PrinterOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
-
-const props = {
-  onChange({ file, fileList }) {
-    if (file.status !== "uploading") {
-      console.log(file, fileList);
-    }
-  },
-};
-
-const { Search } = Input;
-
-const dataSource = [
-  {
-    key: "data1",
-    date: "11/15/2022",
-    department: (
-      <div>
-        <Tag color="red">VP Research and Extension</Tag>
-      </div>
-    ),
-    name: "Royeen Lagumen",
-    formname: "IPCR_Kwan",
-  },
-  {
-    key: "data2",
-    date: "11/30/2022",
-    department: (
-      <div>
-        <Tag color="red">VP Administration and Finance</Tag>
-      </div>
-    ),
-    name: "Crispy Jeysi",
-    formname: "IPCR_Ano",
-  },
-  {
-    key: "data2",
-    date: "11/30/2022",
-    department: (
-      <div>
-        <Tag color="red">VP Research and Extension</Tag>
-      </div>
-    ),
-    name: "Edmond Esmalla",
-    formname: "IPCR_Ano",
-  },
-  {
-    key: "data2",
-    date: "11/30/2022",
-    department: (
-      <div>
-        <Tag color="red">VP Academic Affairs</Tag>
-      </div>
-    ),
-    name: "Krezyl Joy Aye ",
-    formname: "IPCR_Ano",
-  },
-];
+import useTableCommons from "../../../service/hooks/useTableCommons";
+import { useMutation } from "react-query";
+import { StrategicPlanAPI } from "../../../data/call/Resource";
 
 const column = [
   {
-    title: "Date Received",
-    dataIndex: "date",
-    key: "date",
-    sorter: (a, b) => a.date - b.date,
-  },
-  {
-    title: "Department",
-    dataIndex: "department",
-    key: "department",
-  },
-  {
     title: "Employee Name",
-    dataIndex: "name",
-    key: "name",
+    dataIndex: "_employee",
+    key: "_employee",
+    sorter: (a, b) => a.last_name - b.last_name,
+    render: (data, record) => {
+      return `${data.last_name}, ${data.first_name}`;
+    },
+  },
+  {
+    title: "Role",
+    dataIndex: "_employee",
+    key: "_role",
     sorter: (a, b) => a.name - b.name,
+    render: (data, record) => {
+      return <Tag color="volcano">{data._role.role}</Tag>;
+    },
   },
 
   {
-    title: "FormName",
-    dataIndex: "formname",
-    key: "formname",
-  },
+    title: "Actions",
+    dataIndex: "action",
+    width: 50,
+    render: (data, record) => {
+      return record.status === 1 ? (
+        <Space>
+          <Tooltip title="Approve">
+            <Button
+              style={{ borderColor: "#73d13d" }}
+              icon={<CheckCircleOutlined style={{ color: "#73d13d" }} />}
+            />
+          </Tooltip>
 
-  {
-    title: "FormName",
-    dataIndex: "formname",
-    render: () => (
-      <Space size="middle">
-        <p>
-          <CheckCircleOutlined
-            style={{ cursor: "pointer", fontSize: 15, color: "green" }}
-          />
-        </p>
-        <p>
-          <CloseCircleOutlined
-            style={{ cursor: "pointer", fontSize: 15, color: "red" }}
-          />
-        </p>
-      </Space>
-    ),
+          <Tooltip title="Reject">
+            <Button icon={<CloseCircleOutlined />} danger />
+          </Tooltip>
+        </Space>
+      ) : (
+        <Button type="primary" icon={<PrinterOutlined />}>
+          Print
+        </Button>
+      );
+    },
   },
 ];
 
 const IpcrTable = () => {
+  const [mainDataSource, setMainDataSource] = React.useState([]);
+  const commons = useTableCommons();
+
+  const expandedRowRender = (record, index, indent, expanded) => {
+    const columns = [
+      {
+        title: "MFO",
+        dataIndex: "_mfo",
+        key: "mfo",
+        render: (data, record) => (
+          <Typography.Text>
+            <Typography.Text strong>{data.code}</Typography.Text> - {data.name}
+          </Typography.Text>
+        ),
+      },
+      {
+        title: "Success Indicator",
+        dataIndex: "success_indicator",
+        key: "success_indicator",
+      },
+    ];
+
+    const data = [];
+    mainDataSource.forEach((value, index) => {
+      if (value._employee.id === record._employee.id)
+        data.push(value._strategic_plan);
+    });
+    return <Table columns={columns} dataSource={data} pagination={false} />;
+  };
+
+  const ipcrMutator = useMutation(StrategicPlanAPI.retrieveToBeApprovedIPCR, {
+    onSuccess: (data) => {
+      setMainDataSource(data.data);
+
+      commons.tableData.setter(
+        data.data
+          .filter(
+            (value, index, self) =>
+              self.findIndex((v) => v._employee.id === value._employee.id) ===
+              index
+          )
+          .map((value, index) => {
+            return { ...value, key: index };
+          })
+      );
+    },
+  });
+
+  React.useEffect(() => {
+    ipcrMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    ipcrMutator.mutate();
+  };
+
   return (
     <>
       <div className="base-container">
-        <Search
-          placeholder="Search"
-          style={{ width: 250, margin: 20 }}
-          allowClear
-        />
+        <Row>
+          <Col>
+            <Space>
+              <Input.Search placeholder="Search" allowClear />
+              <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                Refresh
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+        <br />
 
-        <Table dataSource={dataSource} columns={column} />
+        <Table
+          dataSource={commons.tableData.state}
+          expandable={{ expandedRowRender }}
+          loading={ipcrMutator.isLoading}
+          columns={column}
+        />
       </div>
     </>
   );

@@ -17,11 +17,12 @@ export function transformUser(data) {
       code: office.code,
       name: office.name,
       is_delivery_unit: office.is_delivery_unit,
+      is_parent: office._children.length > 0,
     },
     _role: {
       id: role.id,
       name: role.role,
-      is_head:office._head ? profile.id === office._head.id : false,
+      is_head: office._head ? profile.id === office._head.id : false,
     },
     _level: data._level,
   };

@@ -6,9 +6,8 @@ import ContentTab from "../../component/tabs/ContentTab";
 import MfoPage from "./MfoPage";
 import IpcrPage from "./IpcrPage";
 import OpcrPage from "./OpcrPage";
-import PrintPage from "../DesignPrintpage/PrintPage";
 import UserContext from "../../../service/context/UserContext";
-import IpcrPrint from "../DesignPrintpage/IpcrPrint";
+
 //import PresTable from "../../component/Prestable/PresTable";
 
 const StrategicPlanPage = () => {
@@ -31,16 +30,6 @@ const StrategicPlanPage = () => {
       title: "IPCR",
       key: "ipcr",
       content: <IpcrPage />,
-    },
-    {
-      title: "Print",
-      key: "print",
-      content: <PrintPage />,
-    },
-    {
-      title: "PrintIpcr",
-      key: "printipcr",
-      content: <IpcrPrint />,
     },
   ];
 

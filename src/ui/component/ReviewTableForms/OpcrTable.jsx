@@ -1,15 +1,24 @@
 import React from "react";
-<<<<<<< HEAD
-import { Table, Input, Button, Upload, Tag, Space, Tooltip } from "antd";
-=======
-import { Table, Input, Button, Upload, Tag, Space } from "antd";
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
 import {
-  UploadOutlined,
-  EyeOutlined,
+  Table,
+  Input,
+  Button,
+  Typography,
+  Row,
+  Space,
+  Tag,
+  Col,
+  Tooltip,
+} from "antd";
+import {
   CheckCircleOutlined,
   CloseCircleOutlined,
+  ReloadOutlined,
 } from "@ant-design/icons";
+import useTableCommons from "../../../service/hooks/useTableCommons";
+import { useMutation } from "react-query";
+import { StrategicPlanAPI } from "../../../data/call/Resource";
+import OpcrTypeTags from "../tags/OpcrTypeTags";
 
 const props = {
   name: "file",
@@ -18,153 +27,134 @@ const props = {
     authorization: "authorization-text",
   },
 };
-const { Search } = Input;
-
-const dataSource = [
-  {
-    key: "data1",
-    date: "10/16/2022",
-    department: (
-      <div>
-        <Tag color="geekblue">Institute of Computer Studies</Tag>
-      </div>
-    ),
-    name: "Jocelyn Torio",
-<<<<<<< HEAD
-    formname: "OPCR_Kwan",
-=======
-    formname: "OPCR_Torio",
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
-  },
-  {
-    key: "data2",
-    date: "10/25/2022",
-    department: (
-      <div>
-<<<<<<< HEAD
-        <Tag color="pink">College of Arts and Sciences</Tag>
-      </div>
-    ),
-    name: "Cassie Cassie",
-    formname: "IPCR_Ano",
-=======
-        <Tag color="pink">Management Information System</Tag>
-      </div>
-    ),
-    name: "Raymond Q. Zaratar",
-    formname: "OPCR_Zaratar",
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
-  },
-  {
-    key: "data2",
-    date: "10/25/2022",
-    department: (
-      <div>
-<<<<<<< HEAD
-        <Tag color="purple">National Service Training Program OFfice</Tag>
-      </div>
-    ),
-    name: "Cassie Cassie",
-    formname: "IPCR_Ano",
-=======
-        <Tag color="purple">National Service Training Program Office</Tag>
-      </div>
-    ),
-    name: "Krezyl Joy Aye",
-    formname: "OPCR_Aye",
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
-  },
-  {
-    key: "data2",
-    date: "10/25/202  2",
-    department: (
-      <div>
-        <Tag color="yellow">
-          Intellectual Property Rights and Protection Unit
-        </Tag>
-      </div>
-    ),
-<<<<<<< HEAD
-    name: "Cassie Cassie",
-    formname: "IPCR_Ano",
-=======
-    name: "John Emmanuel Lagrisola",
-    formname: "OPCR_Lagrisola",
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
-  },
-];
 
 const column = [
   {
-    title: "Date Received",
-    dataIndex: "date",
-    key: "date",
-    sorter: (a, b) => a.date - b.date,
+    title: "Office",
+    dataIndex: "_office",
+    key: "_office",
+    render: (data, record) => (
+      <Typography.Text>
+        <Typography.Text strong>{data.code}</Typography.Text> - {data.name}
+      </Typography.Text>
+    ),
   },
   {
-    title: "Department",
-    dataIndex: "department",
-    key: "department",
-  },
-  {
-    title: "Office Head Name",
-    dataIndex: "name",
-    key: "name",
+    title: "Head",
+    key: "_head",
     sorter: (a, b) => a.name - b.name,
+    render: (data, record) =>
+      `${record._office._head.last_name} ${record._office._head.first_name}`,
   },
-  {
-    title: "FormName",
-    dataIndex: "formname",
-    key: "formname",
-  },
+
   {
     title: "Action",
     dataIndex: "action",
-<<<<<<< HEAD
     width: 120,
     render: () => (
       <Space>
-        <Tooltip title="View">
-          <Button type="dashed" icon={<EyeOutlined />} />
-        </Tooltip>
-
         <Tooltip title="Approve">
-          <Button icon={<CheckCircleOutlined />} />
+          <Button
+            style={{ borderColor: "#73d13d" }}
+            icon={<CheckCircleOutlined style={{ color: "#73d13d" }} />}
+          />
         </Tooltip>
 
         <Tooltip title="Reject">
           <Button icon={<CloseCircleOutlined />} danger />
         </Tooltip>
-=======
-    render: () => (
-      <Space size="middle">
-        <p>
-          <CheckCircleOutlined
-            style={{ cursor: "pointer", fontSize: 15, color: "green" }}
-          />
-        </p>
-        <p>
-          <CloseCircleOutlined
-            style={{ cursor: "pointer", fontSize: 15, color: "red" }}
-          />
-        </p>
->>>>>>> b25662d05311683e5ad017480a59e07ff93295d8
       </Space>
     ),
   },
 ];
 
 const OpcrTable = () => {
+  const [mainDataSource, setMainDataSource] = React.useState([]);
+  const commons = useTableCommons();
+
+  const expandedRowRender = (record, index, indent, expanded) => {
+    const columns = [
+      {
+        title: "MFO",
+        dataIndex: "_mfo",
+        key: "mfo",
+        render: (data, record) => (
+          <Typography.Text>
+            <Typography.Text strong>{data.code}</Typography.Text> - {data.name}
+          </Typography.Text>
+        ),
+      },
+      {
+        title: "Type",
+        dataIndex: "type",
+        key: "type",
+        render: (data, record) => <OpcrTypeTags data={data} />,
+      },
+      {
+        title: "Success Indicator",
+        dataIndex: "success_indicator",
+        key: "success_indicator",
+      },
+      {
+        title: "Budget",
+        dataIndex: "budget",
+        key: "budget",
+      },
+    ];
+
+    const data = [];
+    mainDataSource.forEach((value, index) => {
+      if (value._office.id === record._office.id) data.push(value);
+    });
+    return <Table columns={columns} dataSource={data} pagination={false} />;
+  };
+
+  const opcrMutator = useMutation(StrategicPlanAPI.retrieveToBeApprovedOPCR, {
+    onSuccess: (data) => {
+      console.log(data.data);
+      setMainDataSource(data.data);
+
+      commons.tableData.setter(
+        data.data
+          .filter(
+            (value, index, self) =>
+              self.findIndex((v) => v._office.id === value._office.id) === index
+          )
+          .map((value, index) => {
+            return { ...value, key: index };
+          })
+      );
+    },
+  });
+
+  React.useEffect(() => {
+    opcrMutator.mutate();
+  }, []);
+
+  const _handleRefresh = () => {
+    opcrMutator.mutate();
+  };
+
   return (
     <>
       <div className="base-container">
-        <Search
-          placeholder="Search"
-          style={{ width: 250, margin: 20 }}
-          allowClear
+        <Row>
+          <Col>
+            <Space>
+              <Input.Search placeholder="Search" allowClear />
+              <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
+                Refresh
+              </Button>
+            </Space>
+          </Col>
+        </Row>
+        <br />
+        <Table
+          dataSource={commons.tableData.state}
+          expandable={{ expandedRowRender }}
+          loading={opcrMutator.isLoading}
+          columns={column}
         />
-
-        <Table dataSource={dataSource} columns={column} />
       </div>
     </>
   );
