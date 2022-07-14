@@ -138,6 +138,11 @@ const OpcrPage = () => {
   const _handleRefresh = () => {
     strategicPlanMutator.mutate();
   };
+  const _handleSearch = (value) => {
+    strategicPlanMutator.mutate({
+      search: value,
+    });
+  };
 
   const _handleRowSelect = (selected, selectedRows, changeRows) => {
     commons.selectedIndex.setter(selectedRows.map((row) => row.id));
@@ -203,7 +208,11 @@ const OpcrPage = () => {
           <Row justify="space-between">
             <Col>
               <Space>
-                <Input.Search />
+                <Input.Search
+                  placeholder="Search"
+                  allowClear
+                  onSearch={_handleSearch}
+                />
                 <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>

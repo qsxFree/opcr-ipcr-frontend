@@ -111,6 +111,7 @@ const Edit = ({ form }) => {
 
 const Account = ({ form }) => {
   const selectedData = React.useContext(SelectedDataContext);
+  const password = Math.floor(1000 + Math.random() * 9000);
   const data = selectedData.data;
   form.resetFields();
   return (
@@ -123,8 +124,13 @@ const Account = ({ form }) => {
         <Form.Item label="Username" name="username">
           <Input />
         </Form.Item>
-        <Form.Item label="Password" name="password">
-          <Input />
+        <Form.Item
+          label="Password"
+          name="password"
+          initialValue={password}
+          extra="Do not forget to copy the password."
+        >
+          <Input disabled />
         </Form.Item>
 
         <Form.Item label="Access Level" name="role" initialValue={3}>

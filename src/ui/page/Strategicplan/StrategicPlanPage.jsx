@@ -14,8 +14,7 @@ const StrategicPlanPage = () => {
   const navigatorContext = useContext(NavigatorContext);
   navigatorContext.setSelectedKey("strategicPlan");
   const user = React.useContext(UserContext);
-
-  const content = [
+  let content = [
     {
       title: "MFO",
       key: "mfo",
@@ -26,12 +25,18 @@ const StrategicPlanPage = () => {
       key: "opcr",
       content: <OpcrPage />,
     },
-    {
-      title: "IPCR",
-      key: "ipcr",
-      content: <IpcrPage />,
-    },
   ];
+
+  if (!user.user._role.is_head) {
+    content = [
+      ...content,
+      {
+        title: "IPCR",
+        key: "ipcr",
+        content: <IpcrPage />,
+      },
+    ];
+  }
 
   return (
     <>

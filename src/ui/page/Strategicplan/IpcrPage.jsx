@@ -110,6 +110,13 @@ const IpcrPage = () => {
     commons.selectedIndex.setter(selectedRows.map((row) => row.id));
   };
 
+  const _handleSearch = (value) => {
+    strategicPlanMutator.mutate({
+      employee_id: user.user._employee_profile.id,
+      search: value,
+    });
+  };
+
   const _handleSendApproval = () => {
     if (commons.selectedIndex.state.length > 0) {
       Modal.confirm({
@@ -148,7 +155,11 @@ const IpcrPage = () => {
           <Row justify="space-between">
             <Col>
               <Space>
-                <Input.Search placeholder="Search" allowClear />
+                <Input.Search
+                  placeholder="Search"
+                  allowClear
+                  onSearch={_handleSearch}
+                />
                 <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                   Refresh
                 </Button>

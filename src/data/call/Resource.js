@@ -8,6 +8,7 @@ const endpoint = {
   StrategicPlan: "/strategic-plan",
   User: "/user",
   Period: "/period",
+  Analyis: "/analysis",
 };
 
 export const OfficeAPI = {
@@ -78,6 +79,14 @@ export const PeriodAPI = {
 
   activatePeriod: CrudInterface.updateFn(endpoint.Period + "/activate"),
   getActivePeriod: CrudInterface.retrieveFn(endpoint.Period + "/activate"),
+};
+
+export const AnalyisAPI = {
+  statistic: CrudInterface.retrieveListFn(endpoint.Analyis + "/statistic"),
+  userType: CrudInterface.retrieveListFn(endpoint.Analyis + "/user-type"),
+  budgetByPeriod: CrudInterface.retrieveListFn(
+    endpoint.Analyis + "/budget-period"
+  ),
 };
 
 const Resource = {

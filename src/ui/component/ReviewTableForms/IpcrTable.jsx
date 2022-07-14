@@ -122,6 +122,10 @@ const IpcrTable = () => {
     ipcrMutator.mutate();
   };
 
+  const _handleSearch = (value) => {
+    ipcrMutator.mutate({ search: value });
+  };
+
   const _handleApprove = (record) => {
     return () => {
       Modal.confirm({
@@ -223,7 +227,11 @@ const IpcrTable = () => {
         <Row>
           <Col>
             <Space>
-              <Input.Search placeholder="Search" allowClear />
+              <Input.Search
+                placeholder="Search"
+                allowClear
+                onSearch={_handleSearch}
+              />
               <Button icon={<ReloadOutlined />} onClick={_handleRefresh}>
                 Refresh
               </Button>
