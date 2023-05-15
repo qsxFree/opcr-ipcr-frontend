@@ -3,43 +3,45 @@ import { Row, Typography, Form, Input, Button, Col, Alert } from "antd";
 import React from "react";
 import { useMutation } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AuthenticationAPI } from "../../../data/call/AuthenticationAPI";
 import APP_CONFIG from "../../../data/static/config";
+import UserContext from "../../../service/context/UserContext";
+import { transformUser } from "../../../service/utils/transformer/userTransformer";
 import Logo from "../../component/logo/Logo";
 import PlainLayout from "../_base/PlainLayout";
 
 const LoginPage = () => {
   let navigate = useNavigate();
   let { state } = useLocation();
-  //let user = React.useContext(UserContext);
+  let user = React.useContext(UserContext);
   let [form] = Form.useForm();
   const [loginStatus, setLoginStatus] = React.useState(null);
 
-  //   const registerCookieMutation = useMutation(AuthenticationAPI.registerCookie, {
-  //     onSuccess: (data) => {
-  //       loginMutation.mutate(form.getFieldsValue());
-  //     },
-  //     onError: (error) => {
-  //       setLoginStatus("error-cookie");
-  //     },
-  //   });
+  const registerCookieMutation = useMutation(AuthenticationAPI.registerCookie, {
+    onSuccess: (data) => {
+      loginMutation.mutate(form.getFieldsValue());
+    },
+    onError: (error) => {
+      setLoginStatus("error-cookie");
+    },
+  });
 
-  //   const loginMutation = useMutation(AuthenticationAPI.login, {
-  //     onSuccess: (data) => {
-  //       setLoginStatus("success-login");
-  //       user.set(transformUser(data.data));
-  //       navigate(state?.path || "/home");
-  //     },
-  //     onError: (error) => {
-  //       setLoginStatus("error-login");
-  //     },
-  //   });
+  const loginMutation = useMutation(AuthenticationAPI.login, {
+    onSuccess: (data) => {
+      setLoginStatus("success-login");
+      console.log(data.data);
+      user.set(transformUser(data.data));
+      navigate(state?.path || "/");
+    },
+    onError: (error) => {
+      setLoginStatus("error-login");
+    },
+  });
 
   const _login = () => {
-    // form.validateFields().then(() => {
-    //   registerCookieMutation.mutate();
-    // });
-
-    navigate("/home");
+    form.validateFields().then(() => {
+      registerCookieMutation.mutate();
+    });
   };
 
   return (
@@ -102,7 +104,13 @@ const LoginPage = () => {
       <br />
       <Row justify="center">
         <Col>
-          <Button type="primary" onClick={_login}>
+          <Button
+            type="primary"
+            onClick={_login}
+            loading={
+              registerCookieMutation.isLoading || loginMutation.isLoading
+            }
+          >
             Sign in
           </Button>
         </Col>
